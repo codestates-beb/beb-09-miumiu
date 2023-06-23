@@ -1,0 +1,87 @@
+:root {
+  --header-color: #fff;
+}
+
+.header {
+  width: 100%;
+  max-height: 70px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.gridContainer {
+  display: flex !important;
+  align-items: center !important;
+  height: 100%;
+
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+}
+
+.logoContainer {
+  width: 150px;
+}
+
+.logoContainer > a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--header-color)
+}
+
+.gridContainer {
+  margin-top: 0px !important;
+}
+
+.headerMenu {
+  display: flex;
+}
+
+.headerBar::after {
+  content: "|";
+  color: var(--header-color);
+  width: 10px;
+  height: 50px;
+  margin: 0 10px;
+}
+
+.navLink {
+  color: var(--header-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 5px;
+}
+
+.searchContainer {
+  display: flex;
+}
+
+.searchInput {
+  width: 100%;
+  color: var(--header-color);
+  border: none;
+}
+
+.searchInput:active {
+  border: 1px solid var(--header-color);
+  outline: var(--header-color);
+}
+
+.walletBtn {
+  color: var(--header-color);
+}
+
+.headerUser {
+  display: flex;
+}
