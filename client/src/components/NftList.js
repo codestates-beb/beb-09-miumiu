@@ -206,6 +206,15 @@ export default function NftList () {
         }
         {value === 1 && <Box p={3}>Top</Box>}
       </Box>
+      {/* <div>
+        Notable Collections
+      </div>
+      <div>
+        Top Collector Buys Today
+      </div>
+      <div>
+        LGBTQIA+ Pride Month Creator Spotlight
+      </div> */}
     </>
   )
 }
