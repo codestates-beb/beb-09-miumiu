@@ -11,9 +11,17 @@ function App() {
     <Router>
       <div className='App'>
         <Header />
+<<<<<<< HEAD
         <Routes>
           <Route path='/' element={<Main />} />
         </Routes>
+=======
+        <main>
+          <Routes>
+            <Route path='/' element={<Main />} />
+          </Routes>
+        </main>
+>>>>>>> ff15ae546a7a2b59ed15706275c7bfce98653dd7
       </div>
     </Router>
   );
