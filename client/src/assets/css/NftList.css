@@ -1,98 +1,49 @@
-.categoryBtn {
-  color: #fff !important;
-  border: none !important;
-  font-size: 1.1rem !important;
-  font-weight: bold !important;
-  border-radius: 10px !important; 
-}
-
-.categoryBtn:hover {
-  color: #fff !important;
-  border: none !important;
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  border-radius: 10px !important;
-}
-
 /* slide */
-.mainSlide {
-  width: 90%;
-  padding: 30px;
+.slick-slider.slick-initialized {
+  width: 95%;
   margin: 0 auto;
+} 
+
+
+.slick-prev:before, 
+.slick-next:before {
+  color: #999 !important;
+  border-radius: 100%;
+  font-size: 30px;
 }
 
-.slick-list > .slick-track{
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+/* Card */
+.card {
+  width: 300px !important;
+  margin: 0 10px;
 }
 
-.slick-list > .slick-track > div {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
-.imgWrap {
-  width: 250px !important;
-  height: 250px !important;
-  border-radius: 50px !important;
+.cardContent {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
 }
 
-.imgWrap > img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover !important;
-  border-radius: 50px !important;
+.cardFloor > p:first-child, 
+.cardTotal > p:first-child {
+  color: #999;
 }
 
-.slick-dots {
-  right: 10px;
+.cardFloor > p:last-child, 
+.cardTotal > p:last-child {
+  font-weight: 500;
 }
 
-/* Tap */
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
-  color: #888 !important;
-  font-weight: bold !important;
-  transition: all 0.3s;
-  font-size: 1.2rem !important;
-  border-radius: 10%;
-}
-
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root:hover {
-  color: #000 !important;
-}
-
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
-  color: #000 !important;
-  font-weight: bold !important;
-}
-
-.css-1aquho2-MuiTabs-indicator {
-  background-color: #000 !important;
-}
-
-/* table */
-.collect {
+.cardTotal {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
-.tableImg {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10%;
-  margin-right: 20px;
-}
-
-.MuiTableRow-root.MuiTableRow-head.css-1q1u3t4-MuiTableRow-root:hover {
-  background-color: transparent;
-}
-
-.MuiTableRow-root.css-1q1u3t4-MuiTableRow-root {
-  transition: all 0.2s;
-}
-
-.MuiTableRow-root.css-1q1u3t4-MuiTableRow-root:hover {
-  background-color: rgba(0, 0, 0, .05);
+.nftList {
+  margin-top: 60px;
 }
