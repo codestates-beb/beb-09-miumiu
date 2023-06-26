@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import Main from './pages/Main';
 
 import Header from './components/Header';
+import UserInfo from './components/MyPage/userInfo';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Main />} />
+          <Route path='/userinfo' element={<UserInfo />} />
         </Routes>
       </div>
     </Router>
