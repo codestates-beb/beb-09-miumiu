@@ -13,8 +13,11 @@
   border-radius: 10px !important;
 }
 
+/* slide */
 .mainSlide {
+  width: 90%;
   padding: 30px;
+  margin: 0 auto;
 }
 
 .slick-list > .slick-track{
@@ -30,8 +33,8 @@
 }
 
 .imgWrap {
-  width: 400px !important;
-  height: 400px !important;
+  width: 250px !important;
+  height: 250px !important;
   border-radius: 50px !important;
 }
 
@@ -40,4 +43,44 @@
   height: 100%;
   object-fit: cover !important;
   border-radius: 50px !important;
+}
+
+.slick-dots {
+  right: 10px;
+}
+
+/* Tap */
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+  color: #888 !important;
+  font-weight: bold !important;
+  transition: all 0.3s;
+  font-size: 1.2rem !important;
+  border-radius: 10%;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root:hover {
+  color: #000 !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  background-color: #000 !important;
+}
+
+/* table */
+.collect {
+  display: flex;
+  align-items: center;
+}
+
+.tableImg {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10%;
+  margin-right: 20px;
 }
