@@ -33,7 +33,7 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
     // @notice 민팅
     // @param _tokenURI 토큰 아이디
     // @return 민팅된 토큰의 id
-    function mintNFT(string memory _tokenURI) public onlyOwner returns (uint256) {
+    function mintNFT(string memory _tokenURI) public returns (uint256) {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
@@ -44,10 +44,26 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
         return newItemId;
     }
 
+    // @notice 모든 nft 토큰 리스트 
+    // @return 토큰의 id와 메타데이터 URI가 담긴 배열 
+    function getAllNftList() public view returns (NftTokenData[] memory) {
+        uint256 nftLength = _tokenIds.current();
+        NftTokenData[] memory nftTokenData = new NftTokenData[](nftLength);
+
+        for(uint256 i=0; i<nftLength; i++) {
+            uint256 nftTokenId = i+1;
+            string memory nftTokenURI = tokenURI(nftTokenId);
+
+            nftTokenData[i] = NftTokenData(nftTokenId, nftTokenURI);
+        }
+
+        return nftTokenData;
+    }
+
     // @notice 자신이 발행한 토큰 리스트
     // @param _nftTokenOwner 주소
     // @return 발행한 토큰의 id와 메타데이터 URI가 담긴 배열 
-    function getNftTokenList(address _nftTokenOwner) public view onlyOwner returns (NftTokenData[] memory) {
+    function getNftTokenList(address _nftTokenOwner) public view returns (NftTokenData[] memory) {
         uint256 balanceLength = balanceOf(_nftTokenOwner);  // 발행한 nft 갯수 확인
 
         NftTokenData[] memory nftTokenData = new NftTokenData[](balanceLength);
@@ -63,16 +79,28 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
     }
 
     // @notice 구매 
-    // @param _tokenId 판매할 토큰의 아이디
-    function buyNftToken(uint256 _tokenId) public payable {
-        
+    // @param _tokenId 구매할 토큰의 아이디
+    function buyNftToken(uint256 _tokenId, uint256 _price) public payable {
+        address nftTokenOwner = ownerOf(_tokenId);
+
+        require(_price > 0, "nft token not sale.");
+        require(_price  <= msg.value, "caller sent lower than price.");
+        require(nftTokenOwner != msg.sender,"caller is nft token owner.");
+        require(isApprovedForAll(nftTokenOwner, address(this)), "nft token owner did not approve token.");
+
+        payable(nftTokenOwner).transfer(msg.value);
+        IERC721(address(this)).safeTransferFrom(nftTokenOwner, msg.sender, _tokenId);
     }
 
-
-
-
-
-
+    // @notice `tokenId`를 소각
+    // @param tokenId 소각할 토큰 아이디
+    // @dev 발신자가 토큰을 조작할 수 있는 권한이 있는지 확인하지 않는 내부 함수, 사용시 주의 필요
+    function _burn(
+        uint256 tokenId
+    ) internal
+      override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
 
 
 
@@ -92,15 +120,7 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    // @notice `tokenId`를 소각
-    // @param tokenId 소각할 토큰 아이디
-    // @dev 발신자가 토큰을 조작할 수 있는 권한이 있는지 확인하지 않는 내부 함수, 사용시 주의 필요
-    function _burn(
-        uint256 tokenId
-    ) internal
-      override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
+    
 
     function supportsInterface(bytes4 interfaceId)
         public
