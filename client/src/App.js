@@ -6,6 +6,7 @@ import Main from './pages/Main';
 
 import Header from './components/Header';
 import UserInfo from './components/MyPage/userInfo';
+import Footer from './components/Footer'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/userinfo' element={<UserInfo />} />
         </Routes>
       </div>
+      <Footer />
     </Router>
   );
 }

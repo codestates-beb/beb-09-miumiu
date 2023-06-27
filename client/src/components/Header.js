@@ -16,7 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Web3 from 'web3';
-import '../assets/css/Header.css';
+import '../assets/css/Header.css'
 
 export default function Header () {
   let web3;
