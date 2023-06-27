@@ -16,7 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Web3 from 'web3';
-import '../assets/css/Header.css'
+import styles from '../assets/css/Header.module.css'
 
 export default function Header () {
   let web3;
@@ -70,25 +70,25 @@ export default function Header () {
   }
 
   return (
-    <div className="header">
-      <Grid container spacing={3} justifyContent="space-between" alignItems="center" className="gridContainer">
-        <Grid item xs={3} className="logoWrap">
-          <div className="logoContainer">
+    <div className={styles.header}>
+      <Grid container spacing={3} justifyContent="space-between" alignItems="center" className={styles.gridContainer}>
+        <Grid item xs={3} className={styles.logoWrap}>
+          <div className={styles.logoContainer}>
             <Link to='/'>
               <img src="https://cdn.worldvectorlogo.com/logos/opensea.svg" width="40" height="40" alt="logo"  />
-              <span className="logoText">Open C</span>
+              <span className={styles.logoText}>Open C</span>
             </Link>
           </div>
-          <div className="headerBar"></div>
-          <div className="headerMenu">
-            <Link to='/drops' className="navLink">Drops</Link>
-            <Link to='/stats' className="navLink">Stats</Link>
+          <div className={styles.headerBar}></div>
+          <div className={styles.headerMenu}>
+            <Link to='/drops' className={styles.navLink}>Drops</Link>
+            <Link to='/stats' className={styles.navLink}>Stats</Link>
           </div>
         </Grid>
         <Grid item xs={6}>
           <form onSubmit={handleSearchSubmit}>
             <InputBase
-              className="searchInput"
+              className={styles.searchInput}
               value={searchTerm}
               onChange={handleSearchChange}
               sx={{
@@ -109,10 +109,10 @@ export default function Header () {
             />
           </form>
         </Grid>
-        <Grid item container justifyContent={"flex-end"} xs={3} className="headerUser">
+        <Grid item container justifyContent={"flex-end"} xs={3} className={styles.headerUser}>
           {
             !account ? (
-              <Button className="walletBtn" 
+              <Button className={styles.walletBtn} 
                 sx={{
                 color: 'white', 
                 bgcolor: 'rgba(255, 255, 255, 0.2)', 
@@ -128,7 +128,7 @@ export default function Header () {
               </Button>
             ) : (
               <>
-                <Button className="walletBtn" 
+                <Button className={styles.walletBtn} 
                   sx={{
                   color: 'white', 
                   bgcolor: 'rgba(255, 255, 255, 0.2)', 
@@ -147,6 +147,7 @@ export default function Header () {
                   onClose={handleClose}
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
+                  className={styles.logoutModal}
                 >
                   <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
                   <DialogContent>
@@ -155,8 +156,8 @@ export default function Header () {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={Logout} autoFocus>
+                    <Button onClick={handleClose} sx={{ color: '#000' }}>Cancel</Button>
+                    <Button onClick={Logout} autoFocus sx={{ color: 'red' }}>
                       Logout
                     </Button>
                   </DialogActions>
