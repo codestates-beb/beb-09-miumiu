@@ -10,16 +10,38 @@ import {
   DialogActions, 
   DialogContent, 
   DialogContentText, 
-  DialogTitle 
+  DialogTitle,
+  Menu,
+  MenuItem 
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PersonIcon from '@mui/icons-material/Person';
+import CreateIcon from '@mui/icons-material/Create';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Web3 from 'web3';
 import styles from '../assets/css/Header.module.css'
+import { makeStyles } from '@mui/styles';
 
 export default function Header () {
+//...
+
+  const useStyles = makeStyles((theme) => ({
+    menu: {
+      '& .MuiMenuItem-root': {
+        fontSize: '1rem', // MenuItem의 폰트 크기 변경
+        padding: '10px 30px', // MenuItem의 패딩 변경
+        textAlign: 'left'
+      },  
+    },
+  }));
+  const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   let web3;
+
   if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
     web3 = new Web3(window.ethereum);
   }
@@ -46,11 +68,11 @@ export default function Header () {
     }
   };
 
-  const handleClickOpen = () => {
+  const LogoutModal = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const ModalClose = () => {
     setOpen(false);
   };
 
@@ -68,6 +90,16 @@ export default function Header () {
     console.log("Search submitted: ", searchTerm);
     // Here you can add the function to perform the search
   }
+
+  const MenuMouseOver = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const MenuMouseLeave = () => {
+    setAnchorEl(null);
+  };
+
+  
 
   return (
     <div className={styles.header}>
@@ -137,14 +169,13 @@ export default function Header () {
                   padding: '15px',
                   marginRight: '10px'
                   }}
-                  onClick={handleClickOpen}
                   >
                   <WalletIcon sx={{ marginRight: '10px' }}/>
                   {account.slice(0, 13) + '...'}
                 </Button>
                 <Dialog
                   open={open}
-                  onClose={handleClose}
+                  onClose={ModalClose}
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                   className={styles.logoutModal}
@@ -156,7 +187,7 @@ export default function Header () {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} sx={{ color: '#000' }}>Cancel</Button>
+                    <Button onClick={ModalClose} sx={{ color: '#000' }}>Cancel</Button>
                     <Button onClick={Logout} autoFocus sx={{ color: 'red' }}>
                       Logout
                     </Button>
@@ -165,7 +196,8 @@ export default function Header () {
               </>
             )
           }
-          <Grid item>
+          <Grid item onMouseEnter={MenuMouseOver}
+              onMouseLeave={MenuMouseLeave}>
             <Button className="walletBtn" 
               sx={{
               color: 'white', 
@@ -173,9 +205,32 @@ export default function Header () {
               borderRadius: '10px',
               ':hover': {bgcolor: 'rgba(255, 255, 255, 0.4)'},
               padding: '15px',
-              }}>
+              }}
+            >
               <AccountCircleIcon />
             </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              className={classes.menu}
+            >
+              <Link to='/mypage'>
+                <MenuItem>
+                  <PersonIcon sx={{ marginRight: '10px'}} />
+                  Profile
+                </MenuItem>
+              </Link>
+              <MenuItem>
+                <CreateIcon sx={{ marginRight: '10px'}} />
+                Create
+              </MenuItem>
+              <MenuItem onClick={LogoutModal}>
+                <LogoutIcon sx={{ marginRight: '10px'}} />
+                Log Out
+              </MenuItem>
+            </Menu>
           </Grid>
         </Grid>
       </Grid>

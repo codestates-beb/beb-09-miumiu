@@ -91,3 +91,8 @@
   width: 400px;
   height: 200px;
 }
+
+/* menu */
+.menu {
+  width: 500px !important;
+}
