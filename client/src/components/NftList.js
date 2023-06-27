@@ -69,7 +69,7 @@ export default function NftList () {
         <Slider {...settings}>
           {data.map((item, index) => (
             <div className='card' key={index}>
-              <Card sx={{ maxWidth: '400px' }}>
+              <Card sx={{ maxWidth: '400px', borderRadius: '20px' }}>
                 <CardMedia
                   sx={{ height: 140 }}
                   image={image1}
@@ -100,7 +100,7 @@ export default function NftList () {
         <Slider {...settings}>
           {data.map((item, index) => (
             <div className='card' key={index}>
-              <Card sx={{ maxWidth: '400px' }}>
+              <Card sx={{ maxWidth: '400px', borderRadius: '20px' }}>
                 <CardMedia
                   sx={{ height: 140 }}
                   image={image2}
@@ -131,7 +131,7 @@ export default function NftList () {
         <Slider {...settings}>
           {data.map((item, index) => (
             <div className='card' key={index}>
-              <Card sx={{ maxWidth: '400px' }}>
+              <Card sx={{ maxWidth: '400px', borderRadius: '20px' }}>
                 <CardMedia
                   sx={{ height: 140 }}
                   image={image3}
