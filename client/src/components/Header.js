@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { getUserAccount, getUserBalance, fromWei } from '../Contract/Contract';
 import { Context } from '../Context/index';
 import { SET_ACCOUNT, SET_BALANCE, SET_LOGOUT } from '../Context/ActionTypes';
@@ -28,10 +29,13 @@ import styles from '../assets/css/Header.module.css'
 import { makeStyles } from '@mui/styles';
 
 const Header = () => {
+  // cookie
+  const [cookies, setCookie, removeCookie] = useCookies(['isLoggedIn']);
 
   let web3 = new Web3(window.ethereum);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);                  // Modal Open handling
   const [anchorEl, setAnchorEl] = useState(null);           // Menu Cursor Anchor
   const [isMainPage, setIsMainPage]  = useState(true);      // Main Page Check
@@ -39,6 +43,25 @@ const Header = () => {
 
   const { state: { user }, dispatch } = useContext(Context);
   console.log('user', user);
+
+  // 쿠키에 로그인 정보 저장
+  const setLoginCookie = useCallback((account) => {
+    setCookie('user', account, { path: '/' });
+  }, [setCookie]);
+
+  // 쿠키에서 로그인 정보 삭제
+  const removeLoginCookie = useCallback(() => {
+    removeCookie('user', { path: '/' });
+  }, [removeCookie]);
+
+  // 쿠키에 저장된 로그인 정보 확인
+  useEffect(() => {
+    const userCookie = cookies.user;
+    if (userCookie) {
+      // 쿠키에 저장된 로그인 정보가 있을 경우 상태 업데이트
+      dispatch({ type: SET_ACCOUNT, payload: userCookie });
+    }
+  }, [cookies.user, dispatch]);
 
   // scroll 위치에 변경사항이 생길 시 현재 scroll 위치 저장
   useEffect(() => {
@@ -62,6 +85,8 @@ const Header = () => {
 
       dispatch({ type: SET_ACCOUNT, payload: userAddr });
       dispatch({ type: SET_BALANCE, payload: userBalance });
+
+      setLoginCookie(userAddr);
     } catch (e) {
       console.log(e);
     }
@@ -93,13 +118,13 @@ const Header = () => {
     // 유저 브라우저 확인
     let agent = navigator.userAgent.toLowerCase();
 
+    fetchAccountInfo();
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
       console.log(error);
-      if (window.ethereum) {
+      if (!window.ethereum) {
         // 메타마스크 설치가 안되어 있을 경우 설치 페이지로 이동
-      } else {
         if (agent.indexOf('chrome') != -1 || agent.indexOf('msie') != -1) {         // 크롬일 경우
           window.open(`${process.env.REACT_APP_INSTALL_META_CHROME}`, '_blank');
         } else if (agent.indexOf('firefox') != -1) {                                // firefox일 경우
@@ -120,7 +145,9 @@ const Header = () => {
 
   // 메타마스크 연결 해제
   const Logout = () => {
-    setOpen(false); // 추가된 부분
+    setOpen(false); 
+    removeLoginCookie();
+    navigate('/')
     dispatch({ type: SET_LOGOUT });   // Context 상태 초기화
   };
 
@@ -203,7 +230,6 @@ const Header = () => {
                       alert('Connect to Wallet');
                       resolve();
                     });
-                    window.location.reload();
                   }
               }}>
                 <MenuItem>
@@ -218,7 +244,6 @@ const Header = () => {
                       alert('Connect to Wallet');
                       resolve();
                     });
-                    window.location.reload();
                   }
               }}>
                 <MenuItem>
