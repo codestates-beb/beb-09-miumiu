@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { getUserAccount } from '../Contract/Contract'
 import { 
   Grid, 
@@ -30,9 +30,11 @@ const Header = () => {
   let web3 = new Web3(window.ethereum);
 
   const navigate = useNavigate();
-  const [account, setAccount]  = useState('');        // MetaMask Address
-  const [open, setOpen] = useState(false);            // Modal Open handling
-  const [anchorEl, setAnchorEl] = useState(null);     // Menu Cursor Anchor
+  const location = useLocation();
+  const [account, setAccount]  = useState('');            // MetaMask Address
+  const [open, setOpen] = useState(false);                // Modal Open handling
+  const [anchorEl, setAnchorEl] = useState(null);         // Menu Cursor Anchor
+  const [isMainPage, setIsMainPage]  = useState(true);    // Main Page Check
   
   const useStyles = makeStyles((theme) => ({
     menu: {
@@ -131,113 +133,61 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  
+  useEffect(() => {
+    setIsMainPage(location.pathname === '/');
+  }, [location]);
 
   return (
-    <div className={styles.header}>
+    <div className={isMainPage ? styles.header : `${styles.header} ${styles.otherPageHeader}`}>
       <Grid container spacing={3} justifyContent="center" alignItems="center" className={styles.gridContainer}>
         <Grid item xs={3} className={styles.logoWrap}>
           <div className={styles.logoContainer}>
             <Link to='/'>
               <img src="https://cdn.worldvectorlogo.com/logos/opensea.svg" width="40" height="40" alt="logo"  />
-              <span className={styles.logoText}>Open C</span>
+              <span className={isMainPage ? styles.logoText : `${styles.logoText} ${styles.otherPageLogoText}`}>Open C</span>
             </Link>
           </div>
-          <div className={styles.headerBar}></div>
+          <div className={`${styles.headerBar} ${isMainPage ? '' : styles.otherPage}`} ></div>
           <div className={styles.headerMenu}>
-            <Link to='/drops' className={styles.navLink}>Drops</Link>
-            <Link to='/stats' className={styles.navLink}>Stats</Link>
+            <Link to='/drops' className={isMainPage ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Drops</Link>
+            <Link to='/stats' className={isMainPage ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Stats</Link>
           </div>
         </Grid>
         <Grid item xs={6}>
-          <form>
-            <InputBase
-              className={styles.searchInput}
-              value=''
-              sx={{
-                color: 'white',
-                borderRadius: '10px',
-                padding: '10px',
-                bgcolor: 'rgba(255, 255, 255, 0.2)',
-                border: 'none'
-              }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <IconButton>
-                    <SearchIcon sx={{ color: 'white' }} />
-                  </IconButton>
-                </InputAdornment>
-              }
-              placeholder="Search items, collections, and accounts"
-            />
-          </form>
+          <InputBase
+            type="text"
+            className={isMainPage ? styles.searchInput : `${styles.searchInput} ${styles.otherPageSearchInput}`}
+            startAdornment={
+              <InputAdornment position="start">
+                <IconButton>
+                  <SearchIcon className={isMainPage ? styles.searchIcon : `${styles.searchIcon} ${styles.otherPageSearchIcon}`}/>
+                </IconButton>
+              </InputAdornment>
+            }
+            placeholder="Search items, collections, and accounts"
+          />
         </Grid>
         <Grid item container justifyContent={"flex-end"} xs={3} className={styles.headerUser}>
           {
             !account ? (
               <Button className={styles.walletBtn} 
-                sx={{
-                color: 'white', 
-                bgcolor: 'rgba(255, 255, 255, 0.2)', 
-                borderRadius: '10px',
-                ':hover': {bgcolor: 'rgba(255, 255, 255, 0.4)'},
-                padding: '15px',
-                marginRight: '10px'
-                }}
                 onClick={LoginWallet}
-                >
-                <WalletIcon sx={{ marginRight: '10px' }}/>
+              >
+                <WalletIcon sx={{ marginRight: '10px', }}/>
                 Connect Wallet
               </Button>
             ) : (
               <>
-                <Button className={styles.walletBtn} 
-                  sx={{
-                  color: 'white', 
-                  bgcolor: 'rgba(255, 255, 255, 0.2)', 
-                  borderRadius: '10px',
-                  ':hover': {bgcolor: 'rgba(255, 255, 255, 0.4)'},
-                  padding: '15px',
-                  marginRight: '10px'
-                  }}
-                  >
-                  <WalletIcon sx={{ marginRight: '10px' }}/>
+                <Button className={isMainPage ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
+                  <WalletIcon sx={{ marginRight: '10px'}}/>
                   {account.slice(0, 13) + '...'}
                 </Button>
-                <Dialog
-                  open={open}
-                  onClose={ModalClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                  className={styles.logoutModal}
-                >
-                  <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Are you sure you want to logout?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={ModalClose} sx={{ color: '#000' }}>Cancel</Button>
-                    <Button onClick={Logout} autoFocus sx={{ color: 'red' }}>
-                      Logout
-                    </Button>
-                  </DialogActions>
-                </Dialog>
               </>
             )
           }
           <Grid item onMouseEnter={MenuMouseOver}
               onMouseLeave={MenuMouseLeave}>
-            <Button className="walletBtn" 
-              sx={{
-              color: 'white', 
-              bgcolor: 'rgba(255, 255, 255, 0.2)', 
-              borderRadius: '10px',
-              ':hover': {bgcolor: 'rgba(255, 255, 255, 0.4)'},
-              padding: '15px',
-              }}
-            >
+            <Button className={isMainPage ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
               <AccountCircleIcon />
             </Button>
             <Menu
@@ -282,6 +232,26 @@ const Header = () => {
                 Log Out
               </MenuItem>
             </Menu>
+            <Dialog
+              open={open}
+              onClose={ModalClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              className={styles.logoutModal}
+            >
+              <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to logout?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={ModalClose} sx={{ color: '#000' }}>Cancel</Button>
+                <Button onClick={Logout} autoFocus sx={{ color: 'red' }}>
+                  Logout
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </Grid>
       </Grid>

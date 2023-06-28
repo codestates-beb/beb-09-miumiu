@@ -5,8 +5,12 @@ html {
 
 .App {
   min-height: 100vh;
-  padding: 20px 50px;
   background-image: linear-gradient(180deg, rgb(2, 71, 99) 0%, #fff 20%);
+}
+
+.App.otherApp {
+  background-image: none;
+  background-color: white;
 }
 
 a {

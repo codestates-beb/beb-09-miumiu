@@ -10,8 +10,7 @@ const Create = () => {
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
-
-
+  
   const handleButtonClick = () => {
     fileInput.current.click();
   }
@@ -102,14 +101,19 @@ const Create = () => {
         </Typography>
         <textarea type="text" className={styles.description} placeholder='Provide a detailed description of your item.'/>
       </Box>
-      <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
+      <Box sx={{ 
+        alignSelf: 'flex-start', 
+        marginTop: '20px',
+      }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
           Category
         </Typography>
         <Typography variant='caption'>
           The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
         </Typography>
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{
+          marginTop: '20px'
+        }}>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -128,7 +132,19 @@ const Create = () => {
           </Select>
         </FormControl>
       </Box>
-      <Button variant="contained" sx={{ alignSelf: 'flex-start' }}>Mint</Button>
+      <Box sx={{ 
+        borderBottom: '1px solid rgb(204, 204, 204)',
+        width: '100%',
+        margin: '20px 0'
+      }}></Box>
+      <Button variant="contained" sx={{ 
+        alignSelf: 'flex-start',
+        width: '120px',
+        height: '50px',
+        borderRadius: '15px'
+      }}>
+        Mint
+      </Button>
     </Box>
   )
 
