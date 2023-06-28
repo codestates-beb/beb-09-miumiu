@@ -3,7 +3,7 @@ import {
   Button, 
   Grid, 
 } from "@mui/material";
-import '../../assets/css/MainCategory.css'
+import styles from '../../assets/css/MainCategory.module.css'
 
 
 const MainCategory = () => {
@@ -20,7 +20,7 @@ const MainCategory = () => {
       <Grid container spacing={2} sx={{ marginTop: '20px' }}>
         {categories.map((category) => (
           <Grid item key={category}>
-            <Button variant="outlined" className='categoryBtn' onClick={() => handleCategoryClick(category)}>
+            <Button variant="outlined" className={styles.categoryBtn} onClick={() => handleCategoryClick(category)}>
               {category}
             </Button>
           </Grid>

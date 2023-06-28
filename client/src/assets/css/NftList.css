@@ -8,7 +8,11 @@
 } 
 .slick-list {
   height: 100%;
-  display: flex;
+}
+
+.slick-slide {
+  display: flex !important;
+  justify-content: center !important;
 }
 
 

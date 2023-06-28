@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './assets/css/global.css'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 import Main from './pages/Main';

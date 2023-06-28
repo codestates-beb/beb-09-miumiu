@@ -1,41 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Grid, Link, Typography, Box, InputBase, InputAdornment, IconButton, Button } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import SearchIcon from '@mui/icons-material/Search';
-import '../assets/css/Footer.css';
+import styles from '../assets/css/Footer.module.css';
 
 const Footer = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [account, setAccount]  = useState('');
-  const [open, setOpen] = useState(false); // 추가된 부분
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const Logout = () => {
-    setAccount(null);
-    setOpen(false); // 추가된 부분
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  }
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault(); // Prevents page refresh
-    console.log("Search submitted: ", searchTerm);
-    // Here you can add the function to perform the search
-  }
-
 
   return (
     <Box 
@@ -63,11 +35,10 @@ const Footer = () => {
               Join our mailing list to stay in the loop with our newest feature release, NFT drops, and tips and tricks for navigating OpenC.
             </Typography>
             <Grid item xs={12} sx={{ marginTop: '20px'}}>
-              <form onSubmit={handleSearchSubmit} style={{ display: 'flex', alignItems: 'center' }}>
+              <form style={{ display: 'flex', alignItems: 'center' }}>
                 <InputBase
-                  className="searchInput"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
+                  className={styles.searchInput}
+                  value=''
                   sx={{
                     color: '#222',
                     borderRadius: '10px',
@@ -96,19 +67,19 @@ const Footer = () => {
               Join the community
             </Typography>
             <Grid container direction="row" spacing={2} sx={{ marginTop: '20px'}}>
-              <Grid item className='footerIcon'>
+              <Grid item className={styles.footerIcon}>
                 <TwitterIcon sx={{ color: 'white', fontSize: 30 }} />
               </Grid>
-              <Grid item className='footerIcon'>
+              <Grid item className={styles.footerIcon}>
                 <InstagramIcon sx={{ color: 'white', fontSize: 30 }} />
               </Grid>
-              <Grid item className='footerIcon'>
+              <Grid item className={styles.footerIcon}>
                 <GitHubIcon sx={{ color: 'white', fontSize: 30 }} />
               </Grid>
-              <Grid item className='footerIcon'>
+              <Grid item className={styles.footerIcon}>
                 <YouTubeIcon sx={{ color: 'white', fontSize: 30 }} />
               </Grid>
-              <Grid item className='footerIcon'>
+              <Grid item className={styles.footerIcon}>
                 <MailOutlineIcon sx={{ color: 'white', fontSize: 30 }} />
               </Grid>
             </Grid>
