@@ -35,6 +35,22 @@ const Header = () => {
   const [open, setOpen] = useState(false);                // Modal Open handling
   const [anchorEl, setAnchorEl] = useState(null);         // Menu Cursor Anchor
   const [isMainPage, setIsMainPage]  = useState(true);    // Main Page Check
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.pageYOffset);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  
+  let isScrolled = scrollPosition > 30;
   
   const useStyles = makeStyles((theme) => ({
     menu: {
@@ -51,7 +67,7 @@ const Header = () => {
     if(typeof window.ethereum !== 'undefined') {
       console.log('MetaMask is installed!');
     }
-  })
+  }, [])
 
   // 메타마스크 연결
   const LoginWallet = async () => {
@@ -138,29 +154,29 @@ const Header = () => {
   }, [location]);
 
   return (
-    <div className={isMainPage ? styles.header : `${styles.header} ${styles.otherPageHeader}`}>
+    <div className={isMainPage && !isScrolled ? styles.header : `${styles.header} ${styles.otherPageHeader}`}>
       <Grid container spacing={3} justifyContent="center" alignItems="center" className={styles.gridContainer}>
         <Grid item xs={3} className={styles.logoWrap}>
           <div className={styles.logoContainer}>
             <Link to='/'>
               <img src="https://cdn.worldvectorlogo.com/logos/opensea.svg" width="40" height="40" alt="logo"  />
-              <span className={isMainPage ? styles.logoText : `${styles.logoText} ${styles.otherPageLogoText}`}>Open C</span>
+              <span className={isMainPage && !isScrolled ? styles.logoText : `${styles.logoText} ${styles.otherPageLogoText} ${styles.scrolledLogoText}`}>Open C</span>
             </Link>
           </div>
-          <div className={`${styles.headerBar} ${isMainPage ? '' : styles.otherPage}`} ></div>
+          <div className={isMainPage && !isScrolled ? styles.headerBar : `${styles.headerBar} ${styles.otherPage}`} ></div>
           <div className={styles.headerMenu}>
-            <Link to='/drops' className={isMainPage ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Drops</Link>
-            <Link to='/stats' className={isMainPage ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Stats</Link>
+            <Link to='/drops' className={isMainPage && !isScrolled ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Drops</Link>
+            <Link to='/stats' className={isMainPage && !isScrolled ? styles.navLink : `${styles.navLink} ${styles.otherPageNavLink}`}>Stats</Link>
           </div>
         </Grid>
         <Grid item xs={6}>
           <InputBase
             type="text"
-            className={isMainPage ? styles.searchInput : `${styles.searchInput} ${styles.otherPageSearchInput}`}
+            className={isMainPage && !isScrolled ? styles.searchInput : `${styles.searchInput} ${styles.otherPageSearchInput}`}
             startAdornment={
               <InputAdornment position="start">
                 <IconButton>
-                  <SearchIcon className={isMainPage ? styles.searchIcon : `${styles.searchIcon} ${styles.otherPageSearchIcon}`}/>
+                  <SearchIcon className={isMainPage && !isScrolled ? styles.searchIcon : `${styles.searchIcon} ${styles.otherPageSearchIcon}`}/>
                 </IconButton>
               </InputAdornment>
             }
@@ -170,7 +186,7 @@ const Header = () => {
         <Grid item container justifyContent={"flex-end"} xs={3} className={styles.headerUser}>
           {
             !account ? (
-              <Button className={styles.walletBtn} 
+              <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`} 
                 onClick={LoginWallet}
               >
                 <WalletIcon sx={{ marginRight: '10px', }}/>
@@ -178,7 +194,7 @@ const Header = () => {
               </Button>
             ) : (
               <>
-                <Button className={isMainPage ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
+                <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
                   <WalletIcon sx={{ marginRight: '10px'}}/>
                   {account.slice(0, 13) + '...'}
                 </Button>
@@ -187,7 +203,7 @@ const Header = () => {
           }
           <Grid item onMouseEnter={MenuMouseOver}
               onMouseLeave={MenuMouseLeave}>
-            <Button className={isMainPage ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
+            <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
               <AccountCircleIcon />
             </Button>
             <Menu
