@@ -21,13 +21,17 @@ const API_KEY = process.env.NFT_STORAGE_API_KEY;
  * getImage
  * 받아온 이미지 데이터를 url로 변환 후 업로드
  */
+/**
+ * getExampleImage
+ * @returns {Promise<Blob>}
+ */
 async function getImage(img) {
-  // img를 url로 변환
-  // let blob = new Blob([img], { type: "image/*" }); //로컬이미지 blob으로 변환
-  // const chgUrl = URL.createObjectURL(blob); //blob을 url로 변환
-
-  // 이미지 업로드
-  const imageOriginUrl = img;
+  //로컬이미지 blob으로 변환
+  let blob = new Blob([img.beffer], {type: img.mimetype });
+  console.log(img.beffer, img.mimetype)
+  //blob을 url로 변환
+  const url = URL.createObjectURL(blob);
+  const imageOriginUrl = url;
   const r = await fetch(imageOriginUrl);
   if (!r.ok) {
     throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -45,21 +49,28 @@ export async function storeNFT(
   exLink,
   description,
   category,
-  price
+  extension
 ) {
   //url로 이미지 불러오기
-  // const image = await getImage(img);
-  const image = img;
+  const image = await getImage(img);
   const nft = {
     //local image 가져오기
     //image: new File([UTF-8], 'cat.png', { type: 'image/png' }),
     image,
     name: title,
     description: description,
-    price: price,
     properties: {
-      exLink: exLink,
-      category: category,
+      type: "blog-post",
+      origins: {
+        http: "https://blog.nft.storage/posts/2021-11-30-hello-world-nft-storage/",
+        ipfs: "ipfs://bafybeieh4gpvatp32iqaacs6xqxqitla4drrkyyzq6dshqqsilkk3fqmti/blog/post/2021-11-30-hello-world-nft-storage/",
+      },
+      //속성
+      authors: [{ exLink: exLink, category : category , extension: extension }],
+      content: {
+        "text/markdown":
+          "The last year has witnessed the explosion of NFTs onto the world’s mainstage. From fine art to collectibles to music and media, NFTs are quickly demonstrating just how quickly grassroots Web3 communities can grow, and perhaps how much closer we are to mass adoption than we may have previously thought. <... remaining content omitted ...>",
+      },
     },
   };
 
@@ -70,4 +81,4 @@ export async function storeNFT(
   console.log("Metadata URI: ", metadata.url);
 }
 
-// storeNFT();
+//storeNFT();
