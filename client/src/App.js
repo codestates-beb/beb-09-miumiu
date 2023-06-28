@@ -8,7 +8,7 @@ import NftCreate from './pages/NftCreate';
 import Header from './components/Header';
 import UserInfo from './components/MyPage/userInfo';
 import Footer from './components/Footer'
-import Mypage from './pages/MyPage';
+import MyPage from './pages/MyPage';
 
 function App() {
   return (

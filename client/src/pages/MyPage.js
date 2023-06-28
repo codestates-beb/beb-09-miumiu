@@ -10,7 +10,7 @@ import image1 from '../assets/images/dummy1.jpeg';
 //css
 import '../assets/css/MyPage.css';
 
-const Mypage = () => {
+const MyPage = () => {
 
     const [walletAddress, setWalletAddress] = useState('');
     const [userInfo, setUserInfo] = useState();
@@ -88,4 +88,4 @@ const Mypage = () => {
 //     );
 // };
 
-export default Mypage;
+export default MyPage;
