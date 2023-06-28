@@ -1,5 +1,7 @@
-import { NFTStorage } from "nft.storage";
+import { NFTStorage, File } from "nft.storage";
 import dotenv from "dotenv";
+import fs from "fs"
+import path from "path"
 
 dotenv.config();
 
@@ -27,11 +29,11 @@ const API_KEY = process.env.NFT_STORAGE_API_KEY;
  */
 async function getImage(img) {
   //로컬이미지 blob으로 변환
-  let blob = new Blob([img.beffer], {type: img.mimetype });
-  console.log(img.beffer, img.mimetype)
-  //blob을 url로 변환
-  const url = URL.createObjectURL(blob);
-  const imageOriginUrl = url;
+  // let blob = new Blob([img.beffer], {type: img.mimetype });
+  // console.log(img.beffer, img.mimetype)
+  // //blob을 url로 변환
+  // const url = URL.createObjectURL(blob);
+  const imageOriginUrl = "https://gateway.pinata.cloud/ipfs/QmZeVQcVQnhmavnLbJ5yvsbaMGHZSvTiHC4NyjbtrpmJbc?_gl=1*1mljk3z*_ga*NjE0NDE3MjYzLjE2ODc3NjA4NjU.*_ga_5RMPXG14TE*MTY4Nzk3NDY3OS4zLjEuMTY4Nzk3NDY4My41Ni4wLjA.";
   const r = await fetch(imageOriginUrl);
   if (!r.ok) {
     throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -52,11 +54,11 @@ export async function storeNFT(
   extension
 ) {
   //url로 이미지 불러오기
-  const image = await getImage(img);
+  //const image = await getImage(img);
   const nft = {
     //local image 가져오기
     //image: new File([UTF-8], 'cat.png', { type: 'image/png' }),
-    image,
+    image: new File([fs.readFileSync("./wave.mp4")], "wave.mp4", {type: "video/mp4"}),
     name: title,
     description: description,
     properties: {
@@ -81,4 +83,4 @@ export async function storeNFT(
   console.log("Metadata URI: ", metadata.url);
 }
 
-//storeNFT();
+storeNFT();
