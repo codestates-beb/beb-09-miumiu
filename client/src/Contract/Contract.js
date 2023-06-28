@@ -11,6 +11,14 @@ async function getUserBalance(addr) {
   return await web3.eth.getBalance(addr);
 }
 
+function fromWei(n) {
+  if (typeof n !== "string")
+      n = n.toString();
+
+  return web3.utils.fromWei(n, 'ether');
+}
+
+
 export {
-  getUserAccount, getUserBalance
+  getUserAccount, getUserBalance, fromWei
 }

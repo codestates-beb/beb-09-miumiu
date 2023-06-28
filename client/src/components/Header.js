@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { getUserAccount } from '../Contract/Contract'
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { Link, useLocation } from 'react-router-dom';
+import { getUserAccount, getUserBalance, fromWei } from '../Contract/Contract';
+import { Context } from '../Context/index';
+import { SET_ACCOUNT, SET_BALANCE, SET_LOGOUT } from '../Context/ActionTypes';
 import { 
   Grid, 
   InputBase, 
@@ -29,14 +31,16 @@ const Header = () => {
 
   let web3 = new Web3(window.ethereum);
 
-  const navigate = useNavigate();
   const location = useLocation();
-  const [account, setAccount]  = useState('');            // MetaMask Address
-  const [open, setOpen] = useState(false);                // Modal Open handling
-  const [anchorEl, setAnchorEl] = useState(null);         // Menu Cursor Anchor
-  const [isMainPage, setIsMainPage]  = useState(true);    // Main Page Check
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [open, setOpen] = useState(false);                  // Modal Open handling
+  const [anchorEl, setAnchorEl] = useState(null);           // Menu Cursor Anchor
+  const [isMainPage, setIsMainPage]  = useState(true);      // Main Page Check
+  const [scrollPosition, setScrollPosition] = useState(0);  // Scroll Position Check
 
+  const { state: { user }, dispatch } = useContext(Context);
+  console.log('user', user);
+
+  // scroll 위치에 변경사항이 생길 시 현재 scroll 위치 저장
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.pageYOffset);
@@ -49,7 +53,26 @@ const Header = () => {
     };
   }, []);
 
+  /* 유저 account fetching */
+  const fetchAccountInfo = useCallback(async () => {
+    try {
+      let userAddr = await getUserAccount();
+      let userBal = await getUserBalance(userAddr);
+      let userBalance = Number(fromWei(userBal)).toFixed(4);
+
+      dispatch({ type: SET_ACCOUNT, payload: userAddr });
+      dispatch({ type: SET_BALANCE, payload: userBalance });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAccountInfo();
+  }, [fetchAccountInfo]);
   
+
+  // 스크롤 위치 값이 30 이상일 경우
   let isScrolled = scrollPosition > 30;
   
   const useStyles = makeStyles((theme) => ({
@@ -61,13 +84,8 @@ const Header = () => {
       },  
     },
   }));
-  const classes = useStyles();
 
-  useEffect(() => {
-    if(typeof window.ethereum !== 'undefined') {
-      console.log('MetaMask is installed!');
-    }
-  }, [])
+  const classes = useStyles();
 
   // 메타마스크 연결
   const LoginWallet = async () => {
@@ -89,42 +107,7 @@ const Header = () => {
         }
       }
     }
-    setAccount(await getUserAccount());
   };
-
-  /* chain, account 변화 감지 후 callback 함수 실행, return 값으로 리스너 삭제 */
-  // useEffect(() => {
-  //   const { ethereum } = window;
-
-  //   if (ethereum && ethereum.on) {
-  //     const handleChainChanged = () => {
-  //       window.location.reload();
-  //     };
-
-  //     const handleAccountsChanged = (accounts) => {
-  //       fetchAccountInfo();
-  //       if (sessionStorage.getItem('logged')) {
-  //         sessionStorage.clear();
-  //         removeCookie('premium', { path: '/' });
-  //         setDefaultVisible(!defaultVisible);
-  //         setErrModalText('A metamask account change has been detected.');
-  //         dispatch({ type: SET_LOGOUT });
-  //         navigate('/');
-  //         fetchAccountInfo();
-  //       }
-  //     };
-
-  //     ethereum.on('chainChanged', handleChainChanged);
-  //     ethereum.on('accountsChanged', handleAccountsChanged);
-
-  //     return () => {
-  //       if (ethereum.removeListener) {
-  //         ethereum.removeListener('chainChanged', handleChainChanged);
-  //         ethereum.removeListener('accountsChanged', handleAccountsChanged);
-  //       }
-  //     };
-  //   } 
-  // }, []);
 
   const LogoutModal = () => {
     setOpen(true);
@@ -137,8 +120,8 @@ const Header = () => {
 
   // 메타마스크 연결 해제
   const Logout = () => {
-    setAccount(null);
     setOpen(false); // 추가된 부분
+    dispatch({ type: SET_LOGOUT });   // Context 상태 초기화
   };
 
   const MenuMouseOver = (event) => {
@@ -185,7 +168,7 @@ const Header = () => {
         </Grid>
         <Grid item container justifyContent={"flex-end"} xs={3} className={styles.headerUser}>
           {
-            !account ? (
+            !user.account ? (
               <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`} 
                 onClick={LoginWallet}
               >
@@ -196,7 +179,7 @@ const Header = () => {
               <>
                 <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
                   <WalletIcon sx={{ marginRight: '10px'}}/>
-                  {account.slice(0, 13) + '...'}
+                  {user.account.slice(0, 13) + '...'}
                 </Button>
               </>
             )
@@ -214,7 +197,7 @@ const Header = () => {
               className={classes.menu}
             >
               <Link to='/mypage' onClick={async (e) => {
-                  if(!account) {
+                  if(!user.account) {
                     e.preventDefault();
                     await new Promise((resolve) => {
                       alert('Connect to Wallet');
@@ -229,7 +212,7 @@ const Header = () => {
                 </MenuItem>
               </Link>
               <Link to='/create' onClick={async (e) => {
-                  if(!account) {
+                  if(!user.account) {
                     e.preventDefault();
                     await new Promise((resolve) => {
                       alert('Connect to Wallet');
