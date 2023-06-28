@@ -18,5 +18,9 @@
     "nodemon": "^2.0.22"
   },
   "description": "",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^5.7.2"
+  }
 }
