@@ -16,7 +16,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Main />} />
-          <Route path='/userinfo' element={<UserInfo />} />
+          {/* <Route path='/userinfo' element={<UserInfo />} /> */}
           <Route path='/create' element={<NftCreate />} />
         </Routes>
       </div>
