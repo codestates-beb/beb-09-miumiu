@@ -1,6 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './item.css';
+import image1 from "../../assets/images/dummy1.jpeg";
+
+const Item = () => {
+    return (
+        <div>
+            <img src={image1} alt="Item" className='item'/>
+        </div>
+    )
+};
 
 // const Item = (props) => {
 //     const [collectionName, setCollectionName] = useState('');

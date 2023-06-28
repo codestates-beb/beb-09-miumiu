@@ -8,6 +8,7 @@ import NftCreate from './pages/NftCreate';
 import Header from './components/Header';
 import UserInfo from './components/MyPage/userInfo';
 import Footer from './components/Footer'
+import Mypage from './pages/MyPage';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Main />} />
-          <Route path='/userinfo' element={<UserInfo />} />
+          <Route path='/mypage' element={<Mypage />} />
           <Route path='/create' element={<NftCreate />} />
         </Routes>
       </div>
