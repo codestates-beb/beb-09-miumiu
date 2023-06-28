@@ -135,7 +135,7 @@ const Header = () => {
 
   return (
     <div className={styles.header}>
-      <Grid container spacing={3} justifyContent="space-between" alignItems="center" className={styles.gridContainer}>
+      <Grid container spacing={3} justifyContent="center" alignItems="center" className={styles.gridContainer}>
         <Grid item xs={3} className={styles.logoWrap}>
           <div className={styles.logoContainer}>
             <Link to='/'>
