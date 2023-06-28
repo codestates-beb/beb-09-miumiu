@@ -17,7 +17,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Main />} />
-          <Route path='/mypage' element={<Mypage />} />
+          <Route path='/userinfo' element={<UserInfo />} />
           <Route path='/create' element={<NftCreate />} />
         </Routes>
       </div>

@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
@@ -17,5 +16,7 @@
     "express": "^4.18.2",
     "nft.storage": "^7.1.0",
     "nodemon": "^2.0.22"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
