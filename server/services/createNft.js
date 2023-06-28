@@ -1,34 +1,33 @@
 import { NFTStorage } from "nft.storage";
 import dotenv from "dotenv";
-import catImg from "./cat.jpg"
 
 dotenv.config();
 
 const API_KEY = process.env.NFT_STORAGE_API_KEY;
 
-//로컬이미지 blob으로 변환
-let blob = new Blob([catImg], {type: 'image/*'});
-//blob을 url로 변환
-const url = URL.createObjectURL(blob);
-//console.log(url)
-
-// 이미지 url,  url 만 가능하다
-const imgURL = "https://health.chosun.com/site/data/img_dir/2023/03/17/2023031701883_0.jpg"
-// nft 이름
-const name = 'cheese cat'
-// nft 설명
-const description = '귀여운 치즈냥이'
-// nft 테마
-const theme = 'art'
-// nft 확장자
-const extension = 'jpg'
+// // 이미지 url,  url 만 가능하다
+// const imgURL =
+//   "https://health.chosun.com/site/data/img_dir/2023/03/17/2023031701883_0.jpg";
+// // nft 이름
+// const name = "cheese cat";
+// // nft 설명
+// const description = "귀여운 치즈냥이";
+// // nft 테마
+// const theme = "art";
+// // nft 확장자
+// const extension = "jpg";
 
 /**
- * getExampleImage
- * @returns {Promise<Blob>}
+ * getImage
+ * 받아온 이미지 데이터를 url로 변환 후 업로드
  */
-async function getExampleImage() {
-  const imageOriginUrl = url;
+async function getImage(img) {
+  // img를 url로 변환
+  // let blob = new Blob([img], { type: "image/*" }); //로컬이미지 blob으로 변환
+  // const chgUrl = URL.createObjectURL(blob); //blob을 url로 변환
+
+  // 이미지 업로드
+  const imageOriginUrl = img;
   const r = await fetch(imageOriginUrl);
   if (!r.ok) {
     throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -36,30 +35,31 @@ async function getExampleImage() {
   return r.blob();
 }
 
-
 /**
- * storeExampleNFT
+ * storeNFT
+ * nft 데이터를 저장한다.
  */
-async function storeExampleNFT() {
+export async function storeNFT(
+  img,
+  title,
+  exLink,
+  description,
+  category,
+  price
+) {
   //url로 이미지 불러오기
-  const image = await getExampleImage();
+  // const image = await getImage(img);
+  const image = img;
   const nft = {
-    //local image 가져오기 
+    //local image 가져오기
     //image: new File([UTF-8], 'cat.png', { type: 'image/png' }),
     image,
-    name: name,
+    name: title,
     description: description,
+    price: price,
     properties: {
-      type: "blog-post",
-      origins: {
-        http: "https://blog.nft.storage/posts/2021-11-30-hello-world-nft-storage/",
-        ipfs: "ipfs://bafybeieh4gpvatp32iqaacs6xqxqitla4drrkyyzq6dshqqsilkk3fqmti/blog/post/2021-11-30-hello-world-nft-storage/",
-      },
-      authors: [{ name: "David Choi", theme : theme , extension: extension }],
-      content: {
-        "text/markdown":
-          "The last year has witnessed the explosion of NFTs onto the world’s mainstage. From fine art to collectibles to music and media, NFTs are quickly demonstrating just how quickly grassroots Web3 communities can grow, and perhaps how much closer we are to mass adoption than we may have previously thought. <... remaining content omitted ...>",
-      },
+      exLink: exLink,
+      category: category,
     },
   };
 
@@ -70,4 +70,4 @@ async function storeExampleNFT() {
   console.log("Metadata URI: ", metadata.url);
 }
 
-storeExampleNFT();
+// storeNFT();
