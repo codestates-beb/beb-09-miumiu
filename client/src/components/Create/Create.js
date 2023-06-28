@@ -1,10 +1,16 @@
-import React, { useRef } from 'react';
-import { Box, Button, Card, CardMedia, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react';
+import { Box, Button, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import styles from '../../assets/css/Create.module.css'
 
 const Create = () => {
   const fileInput = useRef(null);
+  const [category, setCategory] = useState('');
+
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+  };
+
 
   const handleButtonClick = () => {
     fileInput.current.click();
@@ -95,6 +101,32 @@ const Create = () => {
           The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
         </Typography>
         <textarea type="text" className={styles.description} placeholder='Provide a detailed description of your item.'/>
+      </Box>
+      <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
+        <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          Category
+        </Typography>
+        <Typography variant='caption'>
+          The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={category}
+            label="Category"
+            onChange={handleChange}
+          >
+            <MenuItem value={'all'}>All</MenuItem>
+            <MenuItem value={'art'}>Art</MenuItem>
+            <MenuItem value={'gaming'}>Gaming</MenuItem>
+            <MenuItem value={'memberships'}>Memberships</MenuItem>
+            <MenuItem value={'pfps'}>PFPs</MenuItem>
+            <MenuItem value={'photography'}>Photography</MenuItem>
+            <MenuItem value={'music'}>Music</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
       <Button variant="contained" sx={{ alignSelf: 'flex-start' }}>Mint</Button>
     </Box>
