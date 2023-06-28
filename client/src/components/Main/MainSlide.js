@@ -1,14 +1,14 @@
 import React from 'react';
-import '../assets/css/MainSlide.css'
+import '../../assets/css/MainSlide.css'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import image1 from "../assets/images/dummy1.jpeg";
-import image2 from "../assets/images/dummy2.png";
-import image3 from "../assets/images/dummy3.jpeg";
+import image1 from "../../assets/images/dummy1.jpeg";
+import image2 from "../../assets/images/dummy2.png";
+import image3 from "../../assets/images/dummy3.jpeg";
 
 
-export default function MainSlide () {
+const MainSlide = () => {
 
   const settings = {
     dots: true,
@@ -49,3 +49,5 @@ export default function MainSlide () {
     </>
   )
 }
+
+export default MainSlide;

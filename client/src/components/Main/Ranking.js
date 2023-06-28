@@ -13,31 +13,16 @@ import {
   TableRow, 
   Paper,
 } from "@mui/material";
-import '../assets/css/Ranking.css'
-import image1 from "../assets/images/dummy1.jpeg";
-import image2 from "../assets/images/dummy2.png";
-import image3 from "../assets/images/dummy3.jpeg";
+import '../../assets/css/Ranking.css'
+import image1 from "../../assets/images/dummy1.jpeg";
+import image2 from "../../assets/images/dummy2.png";
+import image3 from "../../assets/images/dummy3.jpeg";
 
-export default function Ranking () {
+const Ranking = () => {
   const [value, setValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleCategoryClick = (category) => {
-    // 카테고리 버튼 클릭 시 처리할 로직 작성
-    console.log(`Clicked category: ${category}`);
-  };
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 2000
   };
 
   const trendingNFTs = [
@@ -106,15 +91,6 @@ export default function Ranking () {
     },
     // 추가 NFT 데이터
   ];
-
-  const data = [
-    {title: 'NFT 1', floor: 'This is Card 1', totalVolume: '6'},
-    {title: 'NFT 2', floor: 'This is Card 2', totalVolume: '1.5'},
-    {title: 'NFT 3', floor: 'This is Card 3', totalVolume: '7'},
-    {title: 'NFT 4', floor: 'This is Card 4', totalVolume: '2'},
-    //... More cards
-  ]
-
 
   return (
     <>
@@ -192,3 +168,5 @@ export default function Ranking () {
     </>
   )
 }
+
+export default Ranking;

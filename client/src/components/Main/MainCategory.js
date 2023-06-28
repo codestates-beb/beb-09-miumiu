@@ -3,10 +3,10 @@ import {
   Button, 
   Grid, 
 } from "@mui/material";
-import '../assets/css/MainCategory.css'
+import '../../assets/css/MainCategory.css'
 
 
-export default function MainCategory () {
+const MainCategory = () => {
   const categories = ['All', 'Art', 'Gaming', 'Memberships', 'PFPs', 'Photography', 'Music']; 
 
   const handleCategoryClick = (category) => {
@@ -29,3 +29,5 @@ export default function MainCategory () {
     </>
   )
 }
+
+export default MainCategory;
