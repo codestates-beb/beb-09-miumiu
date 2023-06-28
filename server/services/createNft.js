@@ -1,9 +1,16 @@
 import { NFTStorage } from "nft.storage";
 import dotenv from "dotenv";
+import catImg from "./cat.jpg"
 
 dotenv.config();
 
 const API_KEY = process.env.NFT_STORAGE_API_KEY;
+
+//로컬이미지 blob으로 변환
+let blob = new Blob([catImg], {type: 'image/*'});
+//blob을 url로 변환
+const url = URL.createObjectURL(blob);
+//console.log(url)
 
 // 이미지 url,  url 만 가능하다
 const imgURL = "https://health.chosun.com/site/data/img_dir/2023/03/17/2023031701883_0.jpg"
@@ -21,7 +28,7 @@ const extension = 'jpg'
  * @returns {Promise<Blob>}
  */
 async function getExampleImage() {
-  const imageOriginUrl = imgURL;
+  const imageOriginUrl = url;
   const r = await fetch(imageOriginUrl);
   if (!r.ok) {
     throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -29,13 +36,17 @@ async function getExampleImage() {
   return r.blob();
 }
 
+
 /**
  * storeExampleNFT
  */
 async function storeExampleNFT() {
+  //url로 이미지 불러오기
   const image = await getExampleImage();
   const nft = {
-    image, // use image Blob as `image` field
+    //local image 가져오기 
+    //image: new File([UTF-8], 'cat.png', { type: 'image/png' }),
+    image,
     name: name,
     description: description,
     properties: {
