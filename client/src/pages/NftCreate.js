@@ -1,10 +1,11 @@
 import React from 'react';
+import Create from '../components/Create/Create';
 
 const NftCreate = () => {
 
   return (
     <>
-      <h1>Minting</h1>
+      <Create />
     </>
   )
 }

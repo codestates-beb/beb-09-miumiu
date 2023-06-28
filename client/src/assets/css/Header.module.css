@@ -4,10 +4,11 @@
 
 .header {
   width: 100%;
-  max-height: 70px;
+  height: 130px;
   padding-bottom: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
