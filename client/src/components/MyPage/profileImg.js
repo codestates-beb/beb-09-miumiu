@@ -1,8 +1,13 @@
 import React from 'react';
-import '/profileImg.css';
+import './profileImg.css';
+import image1 from "../../assets/images/dummy1.jpeg";
 
-const profileImg = (props) => {
-    return <img src={props.profImg} id="profileimg" alt="profile"></img>;
+const profileImg = () => {
+    return (
+        <div>
+            <img src={image1} alt="ProfileImage" className='profileimage'/>
+        </div>
+    )
 };
 
 export default profileImg;
