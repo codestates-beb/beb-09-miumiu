@@ -18,6 +18,7 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
     Counters.Counter private _tokenIds;
     
     mapping(uint256 => string) public metadataURIs;
+    mapping(uint256 => uint256) public NftPrice;
 
     constructor() ERC721("cozNFT", "NFT"){}
 
@@ -43,6 +44,23 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
 
         return newItemId;
     }
+
+
+    //@notice 가격 설정
+    //@param _tokenId 토큰 id
+    //@param _price 토큰 가격
+    function setNftPrice(uint256 _tokenId, uint256 _price) public returns (uint256){
+        return NftPrice[_tokenId] = _price;
+    }
+
+    //@notion 가격 확인
+    //@param _tokenId 토큰 id
+    function getNftPrice(uint256 _tokenId)public view returns(uint256){
+        return NftPrice[_tokenId];
+    }
+
+
+    
 
     // @notice 모든 nft 토큰 리스트 
     // @return 토큰의 id와 메타데이터 URI가 담긴 배열 
@@ -80,8 +98,9 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
 
     // @notice 구매 
     // @param _tokenId 구매할 토큰의 아이디
-    function buyNftToken(uint256 _tokenId, uint256 _price) public payable {
+    function buyNftToken(uint256 _tokenId) public payable {
         address nftTokenOwner = ownerOf(_tokenId);
+        uint256 _price = NftPrice[_tokenId];
 
         require(_price > 0, "nft token not sale.");
         require(_price  <= msg.value, "caller sent lower than price.");
@@ -91,6 +110,17 @@ contract cozNFTs is ERC721URIStorage, Ownable, ERC721Enumerable {
         payable(nftTokenOwner).transfer(msg.value);
         IERC721(address(this)).safeTransferFrom(nftTokenOwner, msg.sender, _tokenId);
     }
+    // function buyNftToken(uint256 _tokenId, uint256 _price) public payable {
+    //     address nftTokenOwner = ownerOf(_tokenId);
+
+    //     require(_price > 0, "nft token not sale.");
+    //     require(_price  <= msg.value, "caller sent lower than price.");
+    //     require(nftTokenOwner != msg.sender,"caller is nft token owner.");
+    //     require(isApprovedForAll(nftTokenOwner, address(this)), "nft token owner did not approve token.");
+
+    //     payable(nftTokenOwner).transfer(msg.value);
+    //     IERC721(address(this)).safeTransferFrom(nftTokenOwner, msg.sender, _tokenId);
+    // }
 
     // @notice `tokenId`를 소각
     // @param tokenId 소각할 토큰 아이디
