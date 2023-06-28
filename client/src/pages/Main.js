@@ -1,10 +1,10 @@
 import React from 'react';
-import NftList from '../components/NftList';
-import MainCategory from '../components/MainCategory';
-import MainSlide from '../components/MainSlide';
-import Ranking from '../components/Ranking';
+import NftList from '../components/Main/NftList';
+import MainCategory from '../components/Main/MainCategory';
+import MainSlide from '../components/Main/MainSlide';
+import Ranking from '../components/Main/Ranking';
 
-export default function Main () {
+const Main = () =>  {
 
   return (
     <div>
@@ -15,3 +15,5 @@ export default function Main () {
     </div>
   )
 }
+
+export default Main;

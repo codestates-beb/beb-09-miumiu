@@ -7,10 +7,10 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import '../assets/css/NftList.css'
-import image1 from "../assets/images/dummy1.jpeg";
-import image2 from "../assets/images/dummy2.png";
-import image3 from "../assets/images/dummy3.jpeg";
+import '../../assets/css/NftList.css'
+import image1 from "../../assets/images/dummy1.jpeg";
+import image2 from "../../assets/images/dummy2.png";
+import image3 from "../../assets/images/dummy3.jpeg";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -35,7 +35,7 @@ function PrevArrow(props) {
 }
 
 
-export default function NftList () {
+const NftList = () => {
 
   const settings = {
     dots: false,
@@ -160,3 +160,5 @@ export default function NftList () {
     </>
   )
 }
+
+export default NftList;

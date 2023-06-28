@@ -8,7 +8,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import SearchIcon from '@mui/icons-material/Search';
 import '../assets/css/Footer.css';
 
-export default function Footer () {
+const Footer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [account, setAccount]  = useState('');
   const [open, setOpen] = useState(false); // 추가된 부분
@@ -133,3 +133,5 @@ export default function Footer () {
     </Box>
   );
 }
+
+export default Footer;
