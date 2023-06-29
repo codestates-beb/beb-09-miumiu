@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from '../../assets/css/Detail.module.css';
 import image2 from "../../assets/images/dummy2.png";
+import { get721Contract } from '../../Contract/Contract'
+import { Context } from '../../Context/index';
+
 
 const Detail = () => { 
     const imgurl = image2
@@ -12,7 +15,28 @@ const Detail = () => {
     const exlink = "http://aaa.com"
     const extension = "png"
 
+    // user info
+    const { state: { user }, dispatch } = useContext(Context);
+
+    const getAnimalTokens = async () => {
+      let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
+
+      try {
+        // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
+        const response = await get721Contract(contractAddress).methods.getAllNftList().call();
+        console.log(response);
+
+      } catch (error) {
+          console.error(error);
+      }
+    }
+
+    useEffect(() => {
+      getAnimalTokens()
+    }, []);
+
   return (
+
     <>
       <div className={styles.detailContainer}>
         <div className={styles.left}>
