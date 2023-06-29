@@ -26,7 +26,7 @@ function Layout() {
         <Route path='/' element={<Main />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/create' element={<NftCreate />} />
-        <Route path='/detail' element={<NftDetail />} />
+        <Route path='/detail:id' element={<NftDetail />} />
       </Routes>
       <Footer />
     </div>
