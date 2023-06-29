@@ -26,7 +26,7 @@ const MainSlide = () => {
   // user info
   const { state: { user }, dispatch } = useContext(Context);
   const [NftList, setNftList] = useState([]);
-  const [jsonData, setJsonData] = useState(null);
+  const [jsonData, setJsonData] = useState([]);
   const [NftUrl, setNftUrl] = useState()
   
   
@@ -37,6 +37,7 @@ const MainSlide = () => {
     try {
       // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
       const response = await get721Contract(contractAddress).methods.getAllNftList().call();
+      //console.log(response)
       setNftList(prevList => [...prevList, ...response]);
     } catch (error) {
       console.error(error);
@@ -70,7 +71,9 @@ const MainSlide = () => {
         try {
           const response = await fetch(IpfsParser(url));
           const data = await response.json();
-          setJsonData(data);
+          const image = data['image']
+          setJsonData(prevData => [...prevData, image]);
+          
         } catch (error) {
           console.error(error);
         }
@@ -80,12 +83,21 @@ const MainSlide = () => {
       })
       
     }, []);
-
+    
+    console.log("jsonData", jsonData)
   return (
     <>
       <Slider className={styles.mainSlide} {...settings}>
-        <div className={styles.imgWrap}>
-          <img src={image1} alt="Image 1"/>
+        {jsonData.map((data) => {
+          console.log("data",IpfsParser(data))
+          return(
+          <div className={styles.imgWrap} key={data}>
+            <img src={IpfsParser(data)} alt="Image 1"/>
+        </div>
+          )
+        })}
+        {/* <div className={styles.imgWrap}>
+          <img src={IpfsParser('ipfs://bafybeigqxcwjlwmgkhg4i6sq6xptd4nfgext5kg5qxzrpap6nmzp6nwsli/img-1688047924434')} alt="Image 1"/>
         </div>
         <div className={styles.imgWrap}>
           <img src={image1} alt="Image 1"/>
@@ -104,7 +116,7 @@ const MainSlide = () => {
         </div>
         <div className={styles.imgWrap}>
           <img src={image3} alt="Image 3" />
-        </div>
+        </div> */}
         {/* 추가 이미지 */}
       </Slider>
     </>
