@@ -83,4 +83,4 @@ export async function storeNFT(
   console.log("Metadata URI: ", metadata.url);
 }
 
-storeNFT();
+//storeNFT();
