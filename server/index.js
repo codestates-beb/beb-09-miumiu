@@ -3,7 +3,10 @@ import cors from "cors";
 import { articleFormDataHandler } from "./loaders/multer.js";
 import { storeNFT } from "./services/createNft.js";
 import http from "http";
+import path from "path";
+import { spawn } from "child_process";
 
+const __dirname = path.resolve();
 const app = express();
 const PORT = 8082;
 
@@ -12,8 +15,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/src/App.js"));
+  // res.sendFile(path.join(__dirname, "../client/src/App.js"));
+  res.sendFile(path.join(__dirname, "../client/src/index.js"));
 });
 
 // create nft
