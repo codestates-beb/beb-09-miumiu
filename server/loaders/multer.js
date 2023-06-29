@@ -8,6 +8,7 @@ import multer from "multer";
 //     },
 // });
 
+
 // memoryStorage를 사용할 경우
 const multerStorage = multer.memoryStorage();
 const upload = multer({ storage: multerStorage });

@@ -20,12 +20,14 @@ app.get("/", (req, res) => {
 app.post("/create", articleFormDataHandler, async (req, res) => {
   // console.log("req.body", req.body);
   console.log("req.files", req.files);
-
+  const { img } = req.files
   const { title, exLink, description, category, price } = req.body;
-  storeNFT(req.files, title, exLink, description, category, price);
+  
+  storeNFT(img, title, exLink, description, category, price);
 
   res.send("ok");
 });
+
 
 const server = http.createServer(app);
 server.listen(PORT, () => {
