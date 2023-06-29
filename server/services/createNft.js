@@ -1,6 +1,7 @@
 import { NFTStorage, File } from "nft.storage";
 import dotenv from "dotenv";
 import fs from "fs";
+import ethers from 'ethers';
 
 dotenv.config();
 
@@ -24,8 +25,13 @@ export async function storeNFT(
   userAddress // @사용자 Ethereum 주소
 ) {
   // 서명 복구
-  const msgHash = ethers.utils.hashMessage(message);
-  const recoveredAddress = ethers.utils.verifyMessage(msgHash, signature);
+  // const msgHash = ethers.utils.hashMessage(message);
+  const recoveredAddress = ethers.utils.verifyMessage(message, signature);
+
+
+  console.log('recoveredAddress:', recoveredAddress);
+  console.log('userAddress:', userAddress);
+
 
   // 서명한 주소와 제공된 주소가 일치하는지 확인
   if (recoveredAddress.toLowerCase() !== userAddress.toLowerCase()) {

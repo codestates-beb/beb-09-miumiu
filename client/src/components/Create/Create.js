@@ -123,7 +123,7 @@ const Create = () => {
     let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS
   
     try {
-      const receipt = await get721Contract(contractAddress).methods.mintAndTransfer([lastTokenId, tokenURI, creators([minter]), [], [zeroWord]], minter).send({
+      const receipt = await get721Contract(contractAddress).methods.mintNFT(tokenURI).send({
         from: minter,
         gasPrice: gasPrice,
         gasLimit: 500000
@@ -146,6 +146,7 @@ const Create = () => {
     let from = user.account;
     let params = [localStorage.getItem('Sign'), from];
     let method = 'personal_sign'
+    console.log(params);
     try {
       web3.currentProvider.sendAsync({
         method,
@@ -164,7 +165,7 @@ const Create = () => {
           formData.append('price', price);
           formData.append('signature', signature);
           formData.append('message', localStorage.getItem('Sign'));
-          formData.append('address', user.account.toLowerCase());
+          formData.append('userAddress', user.account);
 
           axios(`http://localhost:8082/create`, {
             method: 'POST',
@@ -177,6 +178,7 @@ const Create = () => {
             console.log(res);
           // Here you can call the mintToken function and pass the metadata url.
           let metadata_url = res.data.resultUri; // assuming this is the format of the response
+
           mintToken(metadata_url);
           setTokenId(tokenId + 1);    // 토큰이 발행된 후 토큰 ID 증가
           })
