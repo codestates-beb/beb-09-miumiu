@@ -37,14 +37,14 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_LOGOUT:
             return {
-                ...state,
-                user: {
-                    account: '',
-                    balance: '',
-                    name: '',
-                    profile: '',
-                    banner: '',
-                },
+              ...state,
+              user: {
+                account: '',
+                balance: '',
+                name: '',
+                profile: '',
+                banner: '',
+              },
             }
     case SET_ACCOUNT:
         return {
