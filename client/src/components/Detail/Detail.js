@@ -1,15 +1,17 @@
 import React from 'react';
+import styles from '../../assets/css/Detail.module.css'
+import image2 from "../../assets/images/dummy2.png"
 
 
-const Detail = () => {
+const Detail = () => { 
 
   return (
     <>
-    <div>
-        <div>
-            <img src='./img'></img>
+    <div className={styles.left}>
+        <div >
+            <img src= {image2} alt="dummy image" className={styles.squareImage}></img>
         </div>
-        <div>
+        <div className={styles.Description}>
             <h3>Description</h3>
             <p>설명 부분 입니다.</p>
             <h3>Ditails</h3>
@@ -31,7 +33,7 @@ const Detail = () => {
         </div>
     </div>
       
-    <div>
+    <div className={styles.right}>
         <h2>title</h2>
         <p>Owned by</p>
         <div>

@@ -1,0 +1,21 @@
+.left {
+    float: left;
+    width: 40%;
+  }
+  
+  .right {
+    float: right;
+    width: 60%;
+  }
+
+  .squareImage {
+    width: 40vw; /* Set the width to 20% of the viewport width */
+    height: 40vw; /* Set the height to 20% of the viewport width */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 5%;
+  }
+
+  .Description {
+    border: 1px solid black; /* Add a solid black border */
+    padding: 10px; /* Add padding for spacing */
+  }
