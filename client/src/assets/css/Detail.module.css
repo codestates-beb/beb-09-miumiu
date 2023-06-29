@@ -10,20 +10,22 @@
 
   
   .squareImage {
-    width: 40vw;
-    height: 40vw;
+    margin: 3%;
+    width: 37vw;
+    height: 37vw;
     object-fit: cover;
     border-radius: 10%;
   }
   
   .Description {
-    margin: 1%;
+    margin-top: 1%;
     width:  40vw;
     border: 1px solid rgb(209, 212, 215);
     border-radius: 10px;
     padding: 2.5%;
     display: flex; /* Use flexbox */
     flex-direction: column; /* Stack elements vertically */
+    background-color: rgb(247, 252, 255);
   }
   
   .DescriptionH3 {
@@ -51,6 +53,15 @@
     font-size : 18px
   }
 
+  .rightAlign {
+    float: right;
+  }
+
+
+  .titleContainer{
+    margin-top: 4%;
+  }
+
   .titleSize{
     font-size : 40px
   }
@@ -65,9 +76,10 @@
     width:  40vw;
     border: 1px solid rgb(209, 212, 215);
     border-radius: 10px;
-    padding: 10px;
+    padding: 2.5%;
     display: flex; /* Use flexbox */
     flex-direction: column; /* Stack elements vertically */
+    background-color: rgb(247, 252, 255);
   }
 
 
