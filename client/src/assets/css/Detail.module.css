@@ -8,11 +8,16 @@
     justify-content: center;
   }
 
+.imageContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   .squareImage {
-    margin: 3%;
-    width: 37vw;
-    height: 37vw;
+    width: 600px;
+    height: 600px;
     object-fit: cover;
     border-radius: 10%;
   }
