@@ -42,16 +42,31 @@ const Header = () => {
   const [scrollPosition, setScrollPosition] = useState(0);  // Scroll Position Check
 
   const { state: { user }, dispatch } = useContext(Context);
-  console.log('user', user);
+
+  
+  // 스크롤 위치 값이 30 이상일 경우
+  let isScrolled = scrollPosition > 30;
+  
+  const useStyles = makeStyles((theme) => ({
+    menu: {
+      '& .MuiMenuItem-root': {
+        fontSize: '1rem', // MenuItem의 폰트 크기 변경
+        padding: '10px 30px', // MenuItem의 패딩 변경
+        textAlign: 'left'
+      },  
+    },
+  }));
+
+  const classes = useStyles();
 
   // 쿠키에 로그인 정보 저장
   const setLoginCookie = useCallback((account) => {
-    setCookie('user', account, { path: '/' });
+    setCookie('address', account, { path: '/' });
   }, [setCookie]);
 
   // 쿠키에서 로그인 정보 삭제
   const removeLoginCookie = useCallback(() => {
-    removeCookie('user', { path: '/' });
+    removeCookie('address', { path: '/' });
   }, [removeCookie]);
 
   // 쿠키에 저장된 로그인 정보 확인
@@ -96,21 +111,17 @@ const Header = () => {
     fetchAccountInfo();
   }, [fetchAccountInfo]);
   
-
-  // 스크롤 위치 값이 30 이상일 경우
-  let isScrolled = scrollPosition > 30;
+  const getSigning = useCallback(() => {
+    if (user.account) { // Check if user.account exists
+      localStorage.setItem('Sign', [
+        `Welcome to OpenC! Click \"Sign\" to sign in. No password needed! I accept the MetaWis Terms of Service: Wallet address:${user.account.toLowerCase()}`,
+      ]);
+    }
+  }, [user.account]); // Depend on user.account
   
-  const useStyles = makeStyles((theme) => ({
-    menu: {
-      '& .MuiMenuItem-root': {
-        fontSize: '1rem', // MenuItem의 폰트 크기 변경
-        padding: '10px 30px', // MenuItem의 패딩 변경
-        textAlign: 'left'
-      },  
-    },
-  }));
-
-  const classes = useStyles();
+  useEffect(() => {
+    getSigning(); // Call getSigning when user.account changes
+  }, [getSigning]);
 
   // 메타마스크 연결
   const LoginWallet = async () => {
@@ -118,7 +129,6 @@ const Header = () => {
     // 유저 브라우저 확인
     let agent = navigator.userAgent.toLowerCase();
 
-    fetchAccountInfo();
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
@@ -132,6 +142,9 @@ const Header = () => {
         }
       }
     }
+
+    fetchAccountInfo();
+    getSigning();
   };
 
   const LogoutModal = () => {

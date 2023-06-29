@@ -1,4 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
+import Web3 from 'web3';
+import { Context } from '../../Context/index'
+import { get721Contract } from '../../Contract/Contract'
 import { 
   Box, 
   Button, 
@@ -17,6 +22,14 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import styles from '../../assets/css/Create.module.css'
 
 const Create = () => {
+
+  let web3 = new Web3(window.ethereum);
+
+  const [cookies, setCookie, removeCookie] = useCookies(['address']);
+
+  // user info
+  const { state: { user }, dispatch } = useContext(Context);
+
   const fileInput = useRef(null);
   const [category, setCategory] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);    // Modal Open handling
@@ -24,6 +37,30 @@ const Create = () => {
   const [checkFile, setCheckFile] = useState(0);            // 비디오(1)인지 이미지(0)인지 체크
   const [nftItem, setNftItem] = useState(null);
   const [nftItemUrl, setNftItemUrl] = useState(null);
+
+  // NFT 정보
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [externalLink, setExternalLink] = useState('');
+  const [price, setPrice] = useState('');
+  const [tokenId, setTokenId] = useState(0); // 초기 토큰 ID를 0으로 설정
+
+
+  const titleChange = (event) => {
+    setTitle(event.target.value);
+  };
+  
+  const descriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const externalLinkChange = (event) => {
+    setExternalLink(event.target.value);
+  };
+  
+  const priceChange = (event) => {
+    setPrice(event.target.value);
+  };
 
   const imageUpload = (event) => {
     if (event.target.files[0] !== undefined) {
@@ -68,7 +105,94 @@ const Create = () => {
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
+
+  const creators = (list) => {
+    const value = 10000 / list.length;
+    return list.map(account => ({ account, value }));
+}
+
+  const mintToken = async (metadata_url) => {
+    // setModalText('Token is being issued.');
+    // setApproveCheck(true);
+    // setVisible(!visible);
+    let minter = user.account;
+    let lastTokenId = tokenId;
+    let tokenURI = metadata_url;
+    let zeroWord = '0x0000000000000000000000000000000000000000000000000000000000000000';
+    let gasPrice = await web3.eth.getGasPrice();
+    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS
   
+    try {
+      const receipt = await get721Contract(contractAddress).methods.mintAndTransfer([lastTokenId, tokenURI, creators([minter]), [], [zeroWord]], minter).send({
+        from: minter,
+        gasPrice: gasPrice,
+        gasLimit: 500000
+      });
+  
+      // setVisible(false);
+      console.log('ERC_721 Success!');
+      // let txt = '721';
+      // mint(receipt, txt);
+    }
+    catch (e) {
+      // setVisible(false);
+      console.log(e);
+      // setErrVisible(!errVisible);
+      // setErrModalText('There is a history issued in the same transaction.');
+    }
+  }
+
+  const mint = async () => {
+    let from = user.account;
+    let params = [localStorage.getItem('Sign'), from];
+    let method = 'personal_sign'
+    try {
+      web3.currentProvider.sendAsync({
+        method,
+        params,
+        from
+      }, function (err, result) {
+        if (!err) {
+          const signature = result.result;
+
+          const formData = new FormData();
+          formData.append('img', nftItem);
+          formData.append('title', title);
+          formData.append('exLink', externalLink);
+          formData.append('description', description);
+          formData.append('category', category);
+          formData.append('price', price);
+          formData.append('signature', signature);
+          formData.append('message', localStorage.getItem('Sign'));
+          formData.append('address', user.account.toLowerCase());
+
+          axios(`http://localhost:8082/create`, {
+            method: 'POST',
+            data: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Accept': '*/*',
+            }
+          }).then(res => {
+            console.log(res);
+          // Here you can call the mintToken function and pass the metadata url.
+          let metadata_url = res.data.resultUri; // assuming this is the format of the response
+          mintToken(metadata_url);
+          setTokenId(tokenId + 1);    // 토큰이 발행된 후 토큰 ID 증가
+          })
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log('title', title)
+  console.log('description', description);
+  console.log('price', price);
+  console.log('img', nftItem);
+  console.log('external Link', externalLink);
+  console.log('category', category);
+
   return (
     <Box sx={{ 
       display: 'flex', 
@@ -154,9 +278,9 @@ const Create = () => {
       </Box>
       <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-          Name <span style={{ fontWeight: 'bold' }}>*</span>
+          Title <span style={{ fontWeight: 'bold' }}>*</span>
         </Typography>
-        <input type="text" className={styles.nftName} placeholder='Item name'/>
+        <input type="text" className={styles.nftName} placeholder='Item name' value={title} onChange={titleChange}/>
       </Box>
       <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
@@ -166,7 +290,10 @@ const Create = () => {
           OpenC will include a link to this URL on this item's detail page, so that users can click to learn more about it. 
           You are welcome to link to your own webpage with more details.
         </Typography>
-        <input type="text" className={styles.nftName} placeholder='https://yoursite.io/item/123'/>
+        <input type="text" className={styles.nftName} 
+          placeholder='https://yoursite.io/item/123' 
+          value={externalLink} 
+          onChange={externalLinkChange}/>
       </Box>
       <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
@@ -175,7 +302,11 @@ const Create = () => {
         <Typography variant='caption'>
           The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
         </Typography>
-        <textarea type="text" className={styles.description} placeholder='Provide a detailed description of your item.'/>
+        <textarea type="text" 
+          className={styles.description} 
+          placeholder='Provide a detailed description of your item.' 
+          value={description}
+          onChange={descriptionChange}/>
       </Box>
       <Box sx={{ 
         alignSelf: 'flex-start', 
@@ -210,34 +341,33 @@ const Create = () => {
       </Box>
       <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-          Supply
-        </Typography>
-        <Typography variant='caption'>
-          The number of items that can be minted.
-        </Typography>
-        <input type="number" className={styles.nftName} placeholder='Amount'/>
-      </Box>
-      <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
-        <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
           Price
         </Typography>
         <Typography variant='caption'>
           OpenC will include a link to this URL on this item's detail page, so that users can click to learn more about it. 
           You are welcome to link to your own webpage with more details.
         </Typography>
-        <input type="number" className={styles.nftName} placeholder='https://yoursite.io/item/123'/>
+        <input type="number" 
+          className={styles.nftName}
+          placeholder='amount' 
+          value={price}
+          onChange={priceChange}/>
       </Box>
       <Box sx={{ 
         borderBottom: '1px solid rgb(204, 204, 204)',
         width: '100%',
         margin: '20px 0'
       }}></Box>
-      <Button variant="contained" sx={{ 
+      <Button 
+        variant="contained" 
+        sx={{ 
         alignSelf: 'flex-start',
         width: '120px',
         height: '50px',
         borderRadius: '15px'
-      }}>
+        }}
+        onClick={mint}
+      >
         Mint
       </Button>
       <Dialog
