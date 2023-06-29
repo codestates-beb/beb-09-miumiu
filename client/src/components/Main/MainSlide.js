@@ -37,7 +37,7 @@ const MainSlide = () => {
     try {
       // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
       const response = await get721Contract(contractAddress).methods.getAllNftList().call();
-      //console.log(response)
+      console.log('response', response)
       setNftList(prevList => [...prevList, ...response]);
     } catch (error) {
       console.error(error);
@@ -65,26 +65,46 @@ const MainSlide = () => {
     
 
     
+    // useEffect(() => {
+    //   const fetchData = async (url) => {
+    //     try {
+    //       const response = await fetch(IpfsParser(url));
+    //       const data = await response.json();
+    //       const image = data['image']
+    //       setJsonData(prevData => [...prevData, image]);
+          
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   };
+    //   NftList.map((data) => {
+    //     fetchData(data[1])
+    //   })
+      
+    // }, []);
     
     useEffect(() => {
       const fetchData = async (url) => {
         try {
           const response = await fetch(IpfsParser(url));
           const data = await response.json();
-          const image = data['image']
+          const image = data['image'];
           setJsonData(prevData => [...prevData, image]);
-          
         } catch (error) {
           console.error(error);
         }
       };
-      NftList.map((data) => {
-        fetchData(data[1])
-      })
-      
-    }, []);
     
-    console.log("jsonData", jsonData)
+      const fetchAllData = async () => {
+        for (const data of NftList) {
+          await fetchData(data[1]);
+        }
+        console.log("jsonData", jsonData);
+      };
+    
+      fetchAllData();
+    }, [NftList]);
+    
   return (
     <>
       <Slider className={styles.mainSlide} {...settings}>
