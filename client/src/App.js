@@ -6,6 +6,7 @@ import './App.css';
 import Main from './pages/Main';
 import NftCreate from './pages/NftCreate';
 import MyPage from './pages/MyPage';
+import NftDetail from './pages/NftDetail';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -25,6 +26,7 @@ function Layout() {
         <Route path='/' element={<Main />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/create' element={<NftCreate />} />
+        <Route path='/detail' element={<NftDetail />} />
       </Routes>
       <Footer />
     </div>
