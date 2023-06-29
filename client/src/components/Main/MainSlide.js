@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useContext, useEffect, useState }from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -6,6 +6,9 @@ import image1 from "../../assets/images/dummy1.jpeg";
 import image2 from "../../assets/images/dummy2.png";
 import image3 from "../../assets/images/dummy3.jpeg";
 import styles from '../../assets/css/MainSlide.module.css'
+
+import { get721Contract } from '../../Contract/Contract'
+import { Context } from '../../Context/index';
 
 
 const MainSlide = () => {
@@ -19,6 +22,65 @@ const MainSlide = () => {
     autoplay: true,
     autoplaySpeed: 2000
   };
+
+  // user info
+  const { state: { user }, dispatch } = useContext(Context);
+  const [NftList, setNftList] = useState([]);
+  const [jsonData, setJsonData] = useState(null);
+  const [NftUrl, setNftUrl] = useState()
+  
+  
+
+  const getAnimalTokens = async () => {
+    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
+
+    try {
+      // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
+      const response = await get721Contract(contractAddress).methods.getAllNftList().call();
+      setNftList(response);
+
+    } catch (error) {
+        console.error(error);
+    }
+  }
+  
+
+    useEffect(() => {
+      getAnimalTokens()
+    }, []);
+
+    NftList.map((el, index) => {
+      setNftUrl(el[1])
+      console.log(el[1])
+    })
+    
+
+    
+
+    const IpfsParser = (url) => {
+      const cid = url.slice(7,url.length)
+      const ipfsUrl = "https://ipfs.io/ipfs/" + cid
+      console.log(ipfsUrl)
+      return ipfsUrl
+    }
+    
+
+    
+    
+    useEffect(() => {
+      const fetchData = async (url) => {
+        try {
+          const response = await fetch(IpfsParser(url));
+          const data = await response.json();
+          setJsonData(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData(NftUrl)
+      
+    }, []);
+    console.log(jsonData)
 
   return (
     <>
