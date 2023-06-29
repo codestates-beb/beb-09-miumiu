@@ -37,6 +37,7 @@ export async function storeNFT(
     //local image 가져오기
     image: new File([fs.readFileSync(imgPath)], imgName, { type: imgType }),
     name: title,
+    price: price,
     description: description,
     properties: {
       exLink: exLink,
