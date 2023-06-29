@@ -1,11 +1,11 @@
 import React from 'react';
 import './profileImg.css';
-import image1 from "../../assets/images/dummy1.jpeg";
+import profile from "../../assets/images/artist_profile_dummy_1@3x.png";
 
 const profileImg = () => {
     return (
         <div>
-            <img src={image1} alt="ProfileImage" className='profileimage'/>
+            <img src={profile} alt="ProfileImage" className='profileimage'/>
         </div>
     )
 };

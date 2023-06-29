@@ -14,9 +14,10 @@ import {
   Paper,
 } from "@mui/material";
 import '../../assets/css/Ranking.css'
-import image1 from "../../assets/images/dummy1.jpeg";
-import image2 from "../../assets/images/dummy2.png";
-import image3 from "../../assets/images/dummy3.jpeg";
+import image1 from "../../assets/images/card_thumbnail_dummy_5.png";
+import image2 from "../../assets/images/card_thumbnail.png";
+import image3 from "../../assets/images/main_slide.png";
+import image4 from "../../assets/images/card_avatar.png";
 
 const Ranking = () => {
   const [value, setValue] = useState(0);
@@ -50,7 +51,7 @@ const Ranking = () => {
     {
       id: 4,
       name: 'NFT 3',
-      image: image3,
+      image: image2,
       FloorPrice: 'This is NFT 3',
       Volume: 'This is NFT 3',
     },
@@ -71,7 +72,7 @@ const Ranking = () => {
     {
       id: 7,
       name: 'NFT 3',
-      image: image3,
+      image: image1,
       FloorPrice: 'This is NFT 3',
       Volume: 'This is NFT 3',
     },
@@ -85,7 +86,7 @@ const Ranking = () => {
     {
       id: 9,
       name: 'NFT 3',
-      image: image3,
+      image: image4,
       FloorPrice: 'This is NFT 3',
       Volume: 'This is NFT 3',
     },

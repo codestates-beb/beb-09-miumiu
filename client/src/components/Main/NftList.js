@@ -8,9 +8,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import '../../assets/css/NftList.css'
-import image1 from "../../assets/images/dummy1.jpeg";
-import image2 from "../../assets/images/dummy2.png";
-import image3 from "../../assets/images/dummy3.jpeg";
+import image1 from "../../assets/images/card_thumbnail_dummy_5.png";
+import image2 from "../../assets/images/card_thumbnail.png";
+import image3 from "../../assets/images/main_slide.png";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;

@@ -5,7 +5,7 @@ import {
     CardMedia,
     CardContent,
   } from "@mui/material";
-import image1 from "../../assets/images/dummy1.jpeg";
+import image1 from "../../assets/images/artist_img_dummy_1.png";
 import styles from '../../assets/css/Item.module.css';
 
 const Item = () => {
@@ -128,29 +128,5 @@ const Item = () => {
         </div>
     )
 };
-
-// const Item = (props) => {
-//     const [collectionName, setCollectionName] = useState('');
-//     useEffect(() => {
-//         const apiUrl = 'http://localhost:8080/api/collection/info';
-//         axios
-//         .put(apiUrl, { contractAddress: props.contractAddress })
-//         .then((res) => {
-//             setCollectionName(res.data.content.collectionName);
-//         });
-//     }, []);
-//     const onClickHandler = () => {
-//         window.location.replace('http://localhost:3000');
-//     };
-//     const JSONmetadata = props.JSONmetadata;
-//     const metadata = JSON.parse(JSONmetadata);
-//     return (
-//         <div key={props.className} id="id_div" onClick={onClickHandler}>
-//             <img src={metadata.image} id="item_img" alt="item img"></img>
-//             <p id="item_name">{metadata.name}</p>
-//             <p id="item_collection">{collectionName}</p>
-//         </div>
-//     );
-// };
 
 export default Item;
