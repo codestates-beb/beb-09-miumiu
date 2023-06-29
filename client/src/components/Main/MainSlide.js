@@ -37,22 +37,20 @@ const MainSlide = () => {
     try {
       // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
       const response = await get721Contract(contractAddress).methods.getAllNftList().call();
-      setNftList(response);
-
+      setNftList(prevList => [...prevList, ...response]);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
   }
   
-
     useEffect(() => {
       getAnimalTokens()
     }, []);
 
-    NftList.map((el, index) => {
-      setNftUrl(el[1])
-      console.log(el[1])
-    })
+    // NftList.map((el, index) => {
+    //   setNftUrl(el[1])
+    //   console.log(el[1])
+    // })
     
 
     
@@ -77,10 +75,11 @@ const MainSlide = () => {
           console.error(error);
         }
       };
-      fetchData(NftUrl)
+      NftList.map((data) => {
+        fetchData(data[1])
+      })
       
     }, []);
-    console.log(jsonData)
 
   return (
     <>

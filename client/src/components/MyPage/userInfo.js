@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './userInfo.css';
+import { Context } from '../../Context/index';
 
 const UserInfo = () => {
+    const { state: { user }, dispatch } = useContext(Context);
+
     return (
-        <div>
+        <div className='walletAddress'>
+            <p>{user.account}</p>
+            <div>
+                <p>Collected</p>
+            </div>
         </div>
     )
 };
 
-// const UserInfo = (accounts) => {
+// const UserInfo = (props) => {
 //     return (
 //         <div>
 //             <p id="username">{props.username}</p>
-//             <p id="walletAddress">{props.walletAddress ? `${props.walletAddress.slice(0,6)}...${props.walletAddress.slice(-4)}` : ""}</p>
+//             <p id="walletAddress">{props.walletAddress ? ${props.walletAddress.slice(0,6)}...${props.walletAddress.slice(-4)} : ""}</p>
 //         </div>
 //     )
 // };
-//컬렉티드 문자 넣어야 한다 
 
 export default UserInfo;

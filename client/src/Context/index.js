@@ -56,29 +56,29 @@ const reducer = (state = initialState, action) => {
         }
     case SET_BALANCE:
       return {
-          ...state,
-          user: {
-              ...state.user,
-              balance: action.payload
-          }
+        ...state,
+        user: {
+          ...state.user,
+          balance: action.payload
+        }
       }
 
     case SET_PROFILE:
       return {
-          ...state,
-          user: {
-              ...state.user,
-              profile: action.payload
-          }
+        ...state,
+        user: {
+          ...state.user,
+          profile: action.payload
+        }
       }
 
     case SET_BANNER:
         return {
-            ...state,
-            user: {
-                ...state.user,
-                banner: action.payload
-            }
+          ...state,
+          user: {
+            ...state.user,
+            banner: action.payload
+          }
         }
   }
 }

@@ -120,7 +120,7 @@ const Create = () => {
     let tokenURI = metadata_url;
     let zeroWord = '0x0000000000000000000000000000000000000000000000000000000000000000';
     let gasPrice = await web3.eth.getGasPrice();
-    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS
+    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
   
     try {
       const receipt = await get721Contract(contractAddress).methods.mintNFT(tokenURI).send({

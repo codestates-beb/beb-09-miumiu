@@ -1,0 +1,36 @@
+.myPageContainer{
+    min-height: 100vh;
+    padding: 0 30px;
+}
+
+.backgroundimg{
+    min-height: 350px; 
+}
+
+.profileContainer{
+    min-height: 100px;
+    width: 976px;
+}
+
+.walletAddress{
+    min-height: 200px;
+}
+
+#mypage{
+    display: grid;
+    grid-template-rows: 300px 180px 50px minmax(300px,auto)
+}
+
+#menubar{
+    grid-row: 3/4;
+    margin-left: 2.2vw;
+}
+
+#items{
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    grid-row: 4/5;
+    margin-left: 1.5vw;
+}
