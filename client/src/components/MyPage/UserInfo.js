@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
-import './userInfo.css';
+import styles from '../../assets/css/UserInfo.module.css';
 import { Context } from '../../Context/index';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const UserInfo = () => {
     const { state: { user }, dispatch } = useContext(Context);
 
     return (
-        <div className='walletAddress'>
-            <p>{user.account}</p>
-            <div>
-                <p>Collected</p>
-            </div>
+        <div className={styles.walletAddress}>
+            <AccountBalanceWalletIcon className={styles.walletIcon}/>
+            <p className={styles.address}>
+                {`${user.account.slice(0,6)}...${user.account.slice(-5)}`}
+            </p>
         </div>
     )
 };

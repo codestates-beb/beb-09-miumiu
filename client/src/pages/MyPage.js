@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import BackgroundImg from '../components/MyPage/backgroundimg';
+import Banner from '../components/MyPage/Banner';
 import ProfileImg from '../components/MyPage/profileImg';
-import Item from '../components/MyPage/item';
-import UserInfo from '../components/MyPage/userInfo';
+import Item from '../components/MyPage/Item';
+import UserInfo from '../components/MyPage/UserInfo';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -13,9 +13,10 @@ const MyPage = () => {
 
     return (
         <div className={styles.myPageContainer}>
-            <BackgroundImg/>
+            <Banner/>
             <ProfileImg/>
             <UserInfo/>
+            <Item />
         </div>
     );
   };

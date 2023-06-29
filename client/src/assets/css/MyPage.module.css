@@ -1,6 +1,6 @@
 .myPageContainer{
     min-height: 100vh;
-    padding: 0 30px;
+    overflow: hidden;
 }
 
 .backgroundimg{
