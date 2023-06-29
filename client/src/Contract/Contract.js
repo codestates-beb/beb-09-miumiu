@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import nft721Abi from './ERC721.abi';
 
 let web3 = new Web3(window.ethereum);
 
@@ -18,7 +19,10 @@ function fromWei(n) {
   return web3.utils.fromWei(n, 'ether');
 }
 
+function get721Contract(addr) {
+  return new web3.eth.Contract(nft721Abi, addr);
+}
 
 export {
-  getUserAccount, getUserBalance, fromWei
+  getUserAccount, getUserBalance, fromWei, get721Contract
 }
