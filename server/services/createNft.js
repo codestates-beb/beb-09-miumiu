@@ -50,6 +50,8 @@ export async function storeNFT(
 
   console.log("NFT data stored!");
   console.log("Metadata URI: ", metadata.url);
+
+  return metadata.url;
 }
 
 //storeNFT();
