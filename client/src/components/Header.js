@@ -221,6 +221,9 @@ const Header = () => {
                   <WalletIcon sx={{ marginRight: '10px'}}/>
                   {user.account.slice(0, 13) + '...'}
                 </Button>
+                <Button className={isMainPage && !isScrolled ? styles.walletBtn : `${styles.walletBtn} ${styles.otherPageWalletBtn}`}>
+                  {user.balance} ETH
+                </Button>
               </>
             )
           }
