@@ -1,0 +1,69 @@
+/* slide */
+.slick-slider.slick-initialized {
+  width: 95%;
+  height: 300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+} 
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
+.slick-slide {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+}
+
+
+.slick-prev:before, 
+.slick-next:before {
+  color: #999 !important;
+  border-radius: 100%;
+  font-size: 30px;
+}
+
+/* Card */
+.card {
+  width: 300px !important;
+  margin: 0 10px;
+  border-radius: 20px;
+  transition: 0.3s;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, .2);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.cardContent {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.cardFloor > p:first-child, 
+.cardTotal > p:first-child {
+  color: #999;
+}
+
+.cardFloor > p:last-child, 
+.cardTotal > p:last-child {
+  font-weight: 500;
+}
+
+.cardTotal {
+  display: flex;
+  flex-direction: column;
+}
+
+.nftList {
+  margin-top: 60px;
+}
