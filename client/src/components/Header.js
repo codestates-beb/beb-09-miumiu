@@ -30,7 +30,7 @@ import { makeStyles } from '@mui/styles';
 
 const Header = () => {
   // cookie
-  const [cookies, setCookie, removeCookie] = useCookies(['isLoggedIn']);
+  const [cookies, setCookie, removeCookie] = useCookies(['address']);
 
   let web3 = new Web3(window.ethereum);
 
