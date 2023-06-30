@@ -1,4 +1,5 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import Web3 from 'web3';
@@ -19,6 +20,7 @@ import {
   DialogTitle, 
 } from '@mui/material';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
 import styles from '../../assets/css/Create.module.css'
 
 const Create = () => {
@@ -31,12 +33,15 @@ const Create = () => {
   const { state: { user }, dispatch } = useContext(Context);
 
   const fileInput = useRef(null);
+  const navigate = useNavigate();
   const [category, setCategory] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);    // Modal Open handling
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");               // Modal Message
   const [checkFile, setCheckFile] = useState(0);            // 비디오(1)인지 이미지(0)인지 체크
   const [nftItem, setNftItem] = useState(null);
   const [nftItemUrl, setNftItemUrl] = useState(null);
+  const [loading, setLoading] = useState(false);  // Add this line
+  const [modalTitle, setModalTitle] = useState(null)
 
   // NFT 정보
   const [title, setTitle] = useState('');
@@ -87,7 +92,8 @@ const Create = () => {
           setNftItem(file);
           setNftItemUrl(imageURL);
         } else {
-          setErrorMessage("File type is not supported. Please upload a PNG, JPG, JPEG, GIF, MP4, or MKV file.");
+          setModalTitle('Error');
+          setMessage("File type is not supported. Please upload a PNG, JPG, JPEG, GIF, MP4, or MKV file.");
           setIsModalOpen(true);
         }
       }
@@ -99,22 +105,14 @@ const Create = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setErrorMessage("");
+    setMessage("");
   };
 
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
 
-  const creators = (list) => {
-    const value = 10000 / list.length;
-    return list.map(account => ({ account, value }));
-}
-
   const mintToken = async (metadata_url) => {
-    // setModalText('Token is being issued.');
-    // setApproveCheck(true);
-    // setVisible(!visible);
     let minter = user.account;
     let lastTokenId = tokenId;
     let tokenURI = metadata_url;
@@ -129,71 +127,104 @@ const Create = () => {
         gasLimit: 500000
       });
   
-      // setVisible(false);
       console.log('ERC_721 Success!');
-      // let txt = '721';
-      // mint(receipt, txt);
+      navigate('/mypage'); 
+      setIsModalOpen(true);
+      setMessage('Minting completed.');
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setMessage('');
+      }, 5000);
     }
     catch (e) {
-      // setVisible(false);
       console.log(e);
-      // setErrVisible(!errVisible);
-      // setErrModalText('There is a history issued in the same transaction.');
+      setModalTitle('Error');
+      setMessage(e.message); // Set the error message here
+      setIsModalOpen(true);  // And open the modal with the error
+      setLoading(false);  // Stop loading
     }
   }
-
+  
   const mint = async () => {
-    let from = user.account;
-    let params = [localStorage.getItem('Sign'), from];
-    let method = 'personal_sign'
-    console.log(params);
-    try {
-      web3.currentProvider.sendAsync({
-        method,
-        params,
-        from
-      }, function (err, result) {
-        if (!err) {
-          const signature = result.result;
+    
+    if(nftItem == null) { 
+      setModalTitle('Error');
+      setMessage('파일을 선택해 주세요.'); 
+      setIsModalOpen(true); 
+    } else if (title.length === 0) {
+      setModalTitle('Error');
+      setMessage('타이틀을 입력해 주세요.'); 
+      setIsModalOpen(true); 
+    } else if (price.length === 0) {
+      setModalTitle('Error');
+      setMessage('가격을 입력해 주세요.'); 
+      setIsModalOpen(true); 
+    } else {
 
-          const formData = new FormData();
-          formData.append('img', nftItem);
-          formData.append('title', title);
-          formData.append('exLink', externalLink);
-          formData.append('description', description);
-          formData.append('category', category);
-          formData.append('price', price);
-          formData.append('signature', signature);
-          formData.append('message', localStorage.getItem('Sign'));
-          formData.append('userAddress', user.account);
-
-          axios(`http://localhost:8082/create`, {
-            method: 'POST',
-            data: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Accept': '*/*',
-            }
-          }).then(res => {
-            console.log(res);
-          // Here you can call the mintToken function and pass the metadata url.
-          let metadata_url = res.data.resultUri; // assuming this is the format of the response
-
-          mintToken(metadata_url);
-          setTokenId(tokenId + 1);    // 토큰이 발행된 후 토큰 ID 증가
-          })
-        }
-      })
-    } catch (error) {
-      console.log(error);
+      // 민팅 중 상태로 설정
+      setLoading(true); 
+      setModalTitle('Minting');
+      setMessage('Minting...'); 
+      setIsModalOpen(true); 
+      let from = user.account;
+      let params = [localStorage.getItem('Sign'), from];
+      let method = 'personal_sign'
+      console.log(params);
+      try {
+        web3.currentProvider.sendAsync({
+          method,
+          params,
+          from
+        }, function (err, result) {
+          if (!err) {
+            const signature = result.result;
+  
+            const formData = new FormData();
+            formData.append('img', nftItem);
+            formData.append('title', title);
+            formData.append('exLink', externalLink);
+            formData.append('description', description);
+            formData.append('category', category);
+            formData.append('price', price);
+            formData.append('signature', signature);
+            formData.append('message', localStorage.getItem('Sign'));
+            formData.append('userAddress', user.account);
+  
+            axios(`http://localhost:8082/create`, {
+              method: 'POST',
+              data: formData,
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                'Accept': '*/*',
+              }
+            }).then(res => {
+              console.log(res);
+              // Here you can call the mintToken function and pass the metadata url.
+              let metadata_url = res.data.resultUri; // assuming this is the format of the response
+  
+              mintToken(metadata_url);
+              setTokenId(tokenId + 1);    // 토큰이 발행된 후 토큰 ID 증가
+            })
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        setModalTitle('Error');
+        setMessage(error.message); // Set the error message here
+        setIsModalOpen(true);  // And open the modal with the error
+        setLoading(false);  // Stop loading
+      }
     }
   }
-  console.log('title', title)
-  console.log('description', description);
-  console.log('price', price);
-  console.log('img', nftItem);
-  console.log('external Link', externalLink);
-  console.log('category', category);
+
+  // Add the following useEffect
+  useEffect(() => {
+    if (message === 'Minting Complete!') {
+      setTimeout(() => {
+        setIsModalOpen(false);
+      }, 5000);
+    }
+  }, [message]);
 
   return (
     <Box sx={{ 
@@ -229,6 +260,7 @@ const Create = () => {
           type="file"
           style={{ display: 'none' }}
           onChange={(e) => imageUpload(e)}
+          required
         />
         {nftItemUrl ? (
           <Box
@@ -282,7 +314,7 @@ const Create = () => {
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
           Title <span style={{ fontWeight: 'bold' }}>*</span>
         </Typography>
-        <input type="text" className={styles.nftName} placeholder='Item name' value={title} onChange={titleChange}/>
+        <input type="text" className={styles.nftName} placeholder='Item name' value={title} onChange={titleChange} required />
       </Box>
       <Box sx={{ alignSelf: 'flex-start', marginTop: '20px' }}>
         <Typography variant='body2' sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
@@ -353,7 +385,8 @@ const Create = () => {
           className={styles.nftName}
           placeholder='amount' 
           value={price}
-          onChange={priceChange}/>
+          onChange={priceChange}
+          required/>
       </Box>
       <Box sx={{ 
         borderBottom: '1px solid rgb(204, 204, 204)',
@@ -377,11 +410,20 @@ const Create = () => {
         onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        className={styles.logoutModal}
       >
-        <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
-        <DialogContent>
+        <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>
+        <DialogContent sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
           <DialogContentText id="alert-dialog-description">
-            {errorMessage}
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              message
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

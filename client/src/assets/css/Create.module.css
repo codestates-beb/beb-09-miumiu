@@ -57,3 +57,9 @@
 .description::placeholder {
   font-weight: 500;
 }
+
+/* modal */
+.logoutModal > div > div {
+  width: 400px;
+  height: 200px;
+}
