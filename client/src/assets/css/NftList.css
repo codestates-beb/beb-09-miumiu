@@ -6,13 +6,15 @@
   display: flex;
   align-items: center;
 } 
-.slick-list {
+.slick-list,
+.slick-track {
   height: 100%;
 }
 
 .slick-slide {
   display: flex !important;
   justify-content: center !important;
+  align-items: center;
 }
 
 
