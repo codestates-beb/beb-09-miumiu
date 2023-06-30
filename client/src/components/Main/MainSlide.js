@@ -32,8 +32,14 @@ const MainSlide = () => {
   const [infoNft, setInfoNft] = useState([]);
   
   
-
-  const getAnimalTokens = async () => {
+  /**
+   * 사용자의 동물 토큰 목록을 가져오는 비동기 함수.
+   * 
+   * @async
+   * @throws {Error} 토큰 목록을 가져오는 중 에러가 발생한 경우.
+   * @returns {void} 토큰 목록을 설정하고 상태에 저장다.
+   */
+  const getUserToken = async () => {
     let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
 
     try {
@@ -48,9 +54,15 @@ const MainSlide = () => {
   }
   
   useEffect(() => {
-    getAnimalTokens()
+    getUserToken()
   }, []);
 
+  /**
+   * 주어진 URL을 IPFS 주소로 변환하는 함수.
+   * 
+   * @param {string} url 변환할 URL.
+   * @returns {string | undefined} IPFS 주소로 변환된 URL입니다. URL이 주어지지 않은 경우 `undefined`를 반환.
+   */
   const IpfsParser = (url) => {
     const cid = url.slice(7,url.length)
     const ipfsUrl = "https://ipfs.io/ipfs/" + cid
@@ -58,6 +70,13 @@ const MainSlide = () => {
     return ipfsUrl
   }
     
+  /**
+   * 모든 NFT 데이터를 가져오는 비동기 함수.
+   * 
+   * @async
+   * @throws {Error} 데이터를 가져오는 중 에러가 발생한 경우.
+   * @returns {void} NFT 데이터를 설정하고 상태에 저장.
+   */
   useEffect(() => {
     const fetchData = async (url) => {
         try {

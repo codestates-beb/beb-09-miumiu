@@ -28,6 +28,12 @@ const Detail = () => {
   const [NftUrl, setNftUrl] = useState();
   const [selectedNft, setSelectedNft] = useState(null);
 
+  /**
+   * 주어진 URL을 IPFS 주소로 변환하는 함수.
+   * 
+   * @param {string} url 변환할 URL.
+   * @returns {string | undefined} IPFS 주소로 변환된 URL입니다. URL이 주어지지 않은 경우 `undefined`를 반환.
+   */
     const IpfsParser = (url) => {
       if (!url) {
         return;

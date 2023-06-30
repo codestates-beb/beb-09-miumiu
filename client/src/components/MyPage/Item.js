@@ -24,20 +24,29 @@ const Item = () => {
 
   console.log(cookies.address);
   
-  const getAnimalTokens = async () => {
-      let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
+    /**
+     * 사용자의 토큰을 가져오는 함수다.
+     */
+    const getUserToken = async () => {
+        let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
     try {
-      const response = await get721Contract(contractAddress).methods.getNftTokenList(cookies.address).call();
-      console.log('response', response)
-      setNftList(response.map(nft => [Number(nft[0]), nft[1]]));
+        const response = await get721Contract(contractAddress).methods.getNftTokenList(cookies.address).call();
+        console.log('response', response)
+        setNftList(response.map(nft => [Number(nft[0]), nft[1]]));
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
-  }
-  useEffect(() => {
-    getAnimalTokens()
-  }, []);
+    }
+    useEffect(() => {
+        getUserToken()
+    }, []);
 
+    /** 
+   * 주어진 URL을 IPFS 주소로 변환하는 함수.
+   * 
+   * @param {string} url 변환할 URL.
+   * @returns {string | undefined} IPFS 주소로 변환된 URL입니다. URL이 주어지지 않은 경우 `undefined`를 반환.
+   */
   const IpfsParser = (url) => {
     const cid = url.slice(7,url.length)
     const ipfsUrl = "https://ipfs.io/ipfs/" + cid
@@ -76,8 +85,8 @@ useEffect(() => {
             <div className={styles.nftContainer}>
                 {infoNft.map((data, i) => {
                     return (
-                        <Link to={`/detail/${i}`} state={{ info: data }}>
-                            <Card sx={{ maxWidth: '300px', borderRadius: '20px' }} className={styles.nft} key={i}>
+                        <Link to={`/detail/${i}`} state={{ info: data }} key={i}>
+                            <Card sx={{ maxWidth: '300px', borderRadius: '20px' }} className={styles.nft}>
                                 <CardMedia
                                     sx={{ height: 140 }}
                                     image={IpfsParser(data.image)}

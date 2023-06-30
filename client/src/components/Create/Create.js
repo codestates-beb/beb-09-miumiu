@@ -50,23 +50,27 @@ const Create = () => {
   const [price, setPrice] = useState('');
   const [tokenId, setTokenId] = useState(0); // 초기 토큰 ID를 0으로 설정
 
-
+  // input value
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
-  
+
+  // input value
   const descriptionChange = (event) => {
     setDescription(event.target.value);
   };
 
+  // input value
   const externalLinkChange = (event) => {
     setExternalLink(event.target.value);
   };
-  
+
+  // input value  
   const priceChange = (event) => {
     setPrice(event.target.value);
   };
 
+  // file upload
   const imageUpload = (event) => {
     if (event.target.files[0] !== undefined) {
       // 업로드 한 파일 가져오기
@@ -111,7 +115,14 @@ const Create = () => {
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
-
+  /**
+   * 주어진 메타데이터 URL을 사용하여 비동기적으로 새 NFT 토큰을 발행다.
+   *
+   * @async
+   * @param {string} metadata_url - 토큰 메타데이터의 URL.
+   * @throws {Error} 토큰 발행 중 에러가 발생한 경우.
+   * @returns {void} 토큰 발행이 성공하면 '/mypage'로 이동
+   */
   const mintToken = async (metadata_url) => {
     let minter = user.account;
     let lastTokenId = tokenId;
@@ -145,6 +156,13 @@ const Create = () => {
     }
   }
   
+  /**
+   * NFT 토큰을 발행하는 비동기 함수다.
+   *
+   * @async
+   * @throws {Error} 파일, 타이틀, 가격 중 하나라도 입력하지 않은 경우, 또는 토큰 발행 중 에러가 발생한 경우.
+   * @returns {void} 발행이 성공하면 토큰 ID를 1 증가시키고 토큰 발행 함수(mintToken)를 호출합니다.
+   */
   const mint = async () => {
     
     if(nftItem == null) { 
